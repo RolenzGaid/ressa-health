@@ -1,0 +1,49 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.rh-features { background: $c-white; }
+
+.rh-features__head { margin-bottom: clamp(2.25rem, 1.4rem + 3vw, 3.5rem); }
+
+.rh-features__grid {
+  display: grid;
+  gap: clamp(1.5rem, 0.9rem + 2.2vw, 2.75rem) clamp(1.25rem, 0.6rem + 2vw, 2.5rem);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr));
+
+  @include up('md') { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @include up('lg') { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.rh-feature {
+  display: flex;
+  flex-direction: column;
+
+  .rh-media {
+    --media-ratio: 16 / 9;
+    margin-bottom: 1.15rem;
+  }
+
+  @include hover {
+    .rh-feature__title { color: $c-teal-700; }
+    .rh-media img, .rh-media video { transform: scale(1.05); }
+  }
+}
+
+.rh-feature__title {
+  font-family: $font-serif;
+  font-size: clamp(1.08rem, 1rem + 0.35vw, 1.28rem);
+  font-weight: 600;
+  line-height: 1.28;
+  color: $c-ink;
+  margin: 0 0 0.55rem;
+  transition: color $dur-fast $ease-out-soft;
+}
+
+.rh-feature__text {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: $c-muted;
+  margin: 0;
+}
+
+.rh-feature__link { margin-top: auto; padding-top: 0.9rem; }

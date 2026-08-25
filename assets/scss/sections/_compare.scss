@@ -1,0 +1,118 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.rh-compare {
+  background: $c-cream-deep;
+  overflow: hidden;
+}
+
+.rh-compare__grid {
+  display: grid;
+  gap: clamp(2rem, 1rem + 3.5vw, 4rem);
+  align-items: center;
+
+  @include up('lg') { grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr); }
+}
+
+.rh-compare__copy {
+  max-width: 26rem;
+
+  .rh-display { margin-bottom: 1.15rem; }
+}
+
+// --------------------------------------------------------------------------
+// Table
+// --------------------------------------------------------------------------
+.rh-compare__table-wrap {
+  background: $c-white;
+  border: 1px solid $c-line-soft;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-sm;
+  overflow: hidden;
+
+  /// Guarantees the table never forces the page to scroll sideways.
+  @include down('md') { overflow-x: auto; }
+}
+
+.rh-compare__table {
+  width: 100%;
+  min-width: 460px;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+
+  th, td { padding: 0.88rem 1rem; vertical-align: middle; }
+
+  thead th {
+    font-family: $font-sans;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: $c-muted;
+    border-bottom: 1px solid $c-line-soft;
+    white-space: nowrap;
+  }
+
+  tbody tr { border-bottom: 1px solid $c-line-soft; }
+  tbody tr:last-child { border-bottom: 0; }
+
+  tbody th {
+    text-align: left;
+    font-weight: 600;
+    color: $c-ink-soft;
+    line-height: 1.45;
+  }
+
+  /// Column 2 is Ressa Health — tinted so the comparison reads at a glance.
+  th:nth-child(2), td:nth-child(2) {
+    background: rgba($c-mint-300, 0.42);
+    text-align: center;
+    width: 118px;
+  }
+
+  th:nth-child(3), td:nth-child(3) {
+    text-align: center;
+    width: 118px;
+  }
+
+  thead th:nth-child(2) { color: $c-teal-800; }
+
+  tbody tr {
+    transition: background-color $dur-fast $ease-out-soft;
+
+    @include hover { background: rgba($c-mint-200, 0.5); }
+  }
+}
+
+.rh-compare__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  font-size: 0.85rem;
+}
+
+.rh-compare__mark--yes { color: $c-teal-600; }
+.rh-compare__mark--no  { color: rgba($c-ink, 0.24); }
+
+/// Ticks draw themselves in as the table scrolls into view.
+.rh-compare__mark--yes svg path {
+  stroke-dasharray: 26;
+  stroke-dashoffset: 26;
+}
+
+.is-revealed .rh-compare__mark--yes svg path {
+  @include motion-safe {
+    animation: rh-draw 0.45s $ease-out-soft forwards;
+    animation-delay: calc(0.15s + var(--row-index, 0) * 70ms);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rh-compare__mark--yes svg path { stroke-dashoffset: 0; }
+}
+
+@include down('lg') {
+  .rh-compare__copy { max-width: none; }
+}

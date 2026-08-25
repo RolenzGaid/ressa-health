@@ -1,0 +1,268 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.rh-stories {
+  background: $c-cream;
+  overflow: hidden;
+}
+
+.rh-stories__grid {
+  display: grid;
+  gap: clamp(1.75rem, 1rem + 3vw, 3rem);
+  align-items: center;
+
+  @include up('lg') { grid-template-columns: minmax(0, 0.62fr) minmax(0, 1.38fr); }
+}
+
+.rh-stories__copy {
+  max-width: 22rem;
+
+  .rh-display { margin-bottom: 1rem; }
+}
+
+// --------------------------------------------------------------------------
+// Slider
+// --------------------------------------------------------------------------
+.rh-slider { position: relative; }
+
+.rh-slider__viewport {
+  overflow: hidden;
+  /// Lets focus rings and the lifted card shadow breathe without clipping.
+  margin: -12px;
+  padding: 12px;
+}
+
+.rh-slider__track {
+  display: flex;
+  gap: clamp(0.85rem, 0.5rem + 1.1vw, 1.35rem);
+  align-items: stretch;
+  transition: transform 0.62s $ease-out-soft;
+  will-change: transform;
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.rh-slider__track.is-dragging {
+  transition: none;
+  cursor: grabbing;
+  user-select: none;
+}
+
+.rh-slider__slide {
+  display: flex;
+  flex: 0 0 var(--slide-basis, 100%);
+  min-width: 0;
+  /// Every slide shares one portrait frame so the row stays even whichever
+  /// mix of video and quote cards an editor publishes.
+  aspect-ratio: var(--slide-ratio, 3 / 4.3);
+}
+
+// --------------------------------------------------------------------------
+// Cards
+// --------------------------------------------------------------------------
+.rh-story {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  transition: transform $dur-base $ease-out-soft, box-shadow $dur-base $ease-out-soft;
+
+  @include hover {
+    transform: translateY(calc(-4px * var(--rh-motion)));
+    box-shadow: $shadow-md;
+  }
+}
+
+// --- Video card ------------------------------------------------------------
+.rh-story--video { background: $c-mint-300; }
+
+.rh-story__media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: $c-mint-300;
+
+  img, video {
+    @include media-cover;
+    transition: transform 0.8s $ease-out-soft, opacity $dur-base $ease-out-soft;
+  }
+
+  video { opacity: 0; z-index: 1; }
+}
+
+/// `is-playing` is toggled by main.js on hover / focus / touch.
+.rh-story.is-playing .rh-story__media video { opacity: 1; }
+.rh-story.is-playing .rh-story__media img   { transform: scale(1.06); }
+
+.rh-story__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(180deg, rgba($c-teal-900, 0) 45%, rgba($c-teal-900, 0.55) 100%);
+  opacity: 0.9;
+  transition: opacity $dur-base $ease-out-soft;
+  pointer-events: none;
+}
+
+.rh-story.is-playing .rh-story__scrim { opacity: 0.45; }
+
+.rh-story__play {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: rgba($c-white, 0.92);
+  color: $c-teal-800;
+  font-size: 1.05rem;
+  box-shadow: 0 6px 22px rgba($c-teal-900, 0.28);
+  transition: transform $dur-base $ease-spring, opacity $dur-base $ease-out-soft, background-color $dur-fast;
+
+  svg { margin-left: 3px; }
+
+  /// Halo pulse to invite the hover interaction.
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid rgba($c-white, 0.75);
+
+    @include motion-safe { animation: rh-pulse-ring 2.8s $ease-out-soft infinite; }
+  }
+}
+
+.rh-story.is-playing .rh-story__play {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.7);
+}
+
+.rh-story__caption {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1rem 1.15rem;
+  color: $c-white;
+  text-align: left;
+  pointer-events: none;
+}
+
+.rh-story__name {
+  display: block;
+  font-family: $font-sans;
+  font-size: 0.85rem;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.rh-story__meta {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: rgba($c-white, 0.8);
+  margin-top: 2px;
+}
+
+// --- Quote card ------------------------------------------------------------
+.rh-story--quote {
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  text-align: left;
+  gap: 0.7rem;
+  padding: clamp(1.05rem, 0.8rem + 1vw, 1.6rem);
+  background: $c-mint-300;
+  color: $c-teal-900;
+}
+
+.rh-story__quote-mark {
+  font-family: $font-serif;
+  font-size: 1.85rem;
+  line-height: 0.6;
+  color: rgba($c-teal-800, 0.35);
+}
+
+.rh-story__quote {
+  margin: 0;
+  font-size: clamp(0.76rem, 0.7rem + 0.22vw, 0.85rem);
+  line-height: 1.66;
+  font-weight: 500;
+}
+
+.rh-story__attrib {
+  /// Pinned to the bottom so the credit is never the thing that gets clipped.
+  margin-top: auto;
+  padding-top: 0.5rem;
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: rgba($c-teal-900, 0.72);
+}
+
+// --------------------------------------------------------------------------
+// Controls
+// --------------------------------------------------------------------------
+.rh-slider__controls {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}
+
+.rh-slider__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid $c-line;
+  background: $c-white;
+  color: $c-ink-soft;
+  transition: background-color $dur-fast $ease-out-soft,
+              border-color $dur-fast $ease-out-soft,
+              color $dur-fast $ease-out-soft,
+              transform $dur-fast $ease-spring;
+
+  @include hover {
+    background: $c-teal-700;
+    border-color: $c-teal-700;
+    color: $c-white;
+    transform: scale(1.06);
+  }
+
+  &[disabled] { opacity: 0.35; pointer-events: none; }
+}
+
+.rh-slider__dots {
+  display: flex;
+  gap: 0.4rem;
+  margin-left: auto;
+}
+
+.rh-slider__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: $c-line;
+  transition: background-color $dur-fast $ease-out-soft, width $dur-base $ease-out-soft;
+
+  &[aria-current='true'] { width: 24px; border-radius: $radius-pill; background: $c-teal-600; }
+}
+
+@include down('lg') {
+  .rh-stories__copy { max-width: none; }
+}
+
+/// A single card fills the width on phones, so it needs a shallower frame.
+@include down('md') {
+  .rh-slider__slide { --slide-ratio: 3 / 3.5; }
+}

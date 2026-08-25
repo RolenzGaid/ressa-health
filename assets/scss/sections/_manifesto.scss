@@ -1,0 +1,23 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// --------------------------------------------------------------------------
+// "You are not a result. You are a story." — a quiet full-width statement.
+// --------------------------------------------------------------------------
+.rh-manifesto {
+  background: $c-cream;
+  text-align: center;
+}
+
+.rh-manifesto__inner { @include container($container-slim); }
+
+.rh-manifesto__title {
+  margin: 0 0 1.15rem;
+
+  span { display: block; }
+}
+
+.rh-manifesto__lede {
+  max-width: 40rem;
+  margin-inline: auto;
+}

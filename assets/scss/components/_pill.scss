@@ -1,0 +1,78 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// --------------------------------------------------------------------------
+// Outlined keyword pills ("Biomarkers", "Metabolism", …)
+// --------------------------------------------------------------------------
+.rh-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rh-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.66em 1.35em;
+  border: 1px solid rgba($c-teal-500, 0.55);
+  border-radius: $radius-pill;
+  background: transparent;
+  color: $c-teal-700;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  transition:
+    background-color $dur-fast $ease-out-soft,
+    border-color     $dur-fast $ease-out-soft,
+    color            $dur-fast $ease-out-soft,
+    transform        $dur-fast $ease-out-soft;
+
+  @include hover {
+    background: rgba($c-teal-500, 0.09);
+    border-color: $c-teal-500;
+    transform: translateY(calc(-1px * var(--rh-motion)));
+  }
+}
+
+.rh-pill--solid {
+  background: $c-teal-700;
+  border-color: $c-teal-700;
+  color: $c-white;
+}
+
+.rh-pill--mint {
+  background: $c-mint-300;
+  border-color: transparent;
+  color: $c-teal-800;
+}
+
+.rh-pill--muted {
+  border-color: $c-line;
+  color: $c-muted;
+}
+
+// --------------------------------------------------------------------------
+// Small square-ish badge used above the step media
+// --------------------------------------------------------------------------
+.rh-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.5em 0.95em;
+  border-radius: $radius-sm;
+  background: $c-mint-300;
+  color: $c-teal-800;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.rh-chip--yellow { background: $c-yellow-500; color: $c-ink; }
+.rh-chip--teal   { background: $c-teal-700;   color: $c-white; }
+.rh-chip--quiet  { background: $c-white; color: $c-muted; border: 1px solid $c-line; }

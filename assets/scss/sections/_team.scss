@@ -1,0 +1,46 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.rh-team { background: $c-cream-deep; }
+
+.rh-team__head { margin-bottom: clamp(2rem, 1.3rem + 2.4vw, 3.25rem); }
+
+.rh-team__grid {
+  display: grid;
+  gap: clamp(1.1rem, 0.6rem + 1.6vw, 1.75rem);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+
+  @include up('sm') { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @include up('lg') { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+.rh-member {
+  text-align: center;
+
+  .rh-media {
+    --media-ratio: 4 / 3;
+    --media-bg: #{$c-mint-400};
+    margin-bottom: 0.95rem;
+  }
+
+  @include hover {
+    .rh-media img { transform: scale(1.055); }
+    .rh-member__name { color: $c-teal-700; }
+  }
+}
+
+.rh-member__name {
+  font-family: $font-serif;
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: $c-ink;
+  margin: 0 0 0.2rem;
+  transition: color $dur-fast $ease-out-soft;
+}
+
+.rh-member__role {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: $c-muted;
+  margin: 0;
+}

@@ -1,0 +1,19 @@
+/*
+Theme Name:  Ressa Health
+Theme URI:   https://github.com/RolenzGaid/ressa-health
+Author:      Ryze Agency
+Author URI:  https://ryzeagency.com
+Description: A custom, fully responsive WordPress theme for Ressa Health — the intelligence layer that reads seven health data layers as one story. Includes an animated seven-layer tab wheel, a scroll-driven Test/Analyze/Act sequence, a hover-to-play story carousel and editor-managed content throughout.
+Version:     1.0.0
+Requires at least: 6.0
+Tested up to: 6.6
+Requires PHP: 7.4
+License:     GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: ressa-health
+Tags:        one-column, custom-menu, custom-logo, featured-images, translation-ready, block-styles, wide-blocks, accessibility-ready
+
+All presentational styles live in assets/scss and compile to assets/css/main.css.
+This file exists for the WordPress theme header and is intentionally kept free
+of rules so the two never drift apart.
+*/

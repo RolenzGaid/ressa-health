@@ -1,0 +1,19 @@
+{
+  "name": "ressa-health",
+  "version": "1.0.0",
+  "description": "Build tooling for the Ressa Health WordPress theme.",
+  "private": true,
+  "scripts": {
+    "build:css": "sass assets/scss/main.scss assets/css/main.css --style=compressed --no-source-map",
+    "dev:css": "sass --watch assets/scss/main.scss assets/css/main.css --style=expanded",
+    "build": "npm run build:css"
+  },
+  "devDependencies": {
+    "sass": "^1.77.0"
+  },
+  "browserslist": [
+    "> 0.5%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

@@ -1,0 +1,126 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ==========================================================================
+// Scroll reveal
+// --------------------------------------------------------------------------
+// Elements marked `data-rh-reveal` start offset and transparent; the
+// IntersectionObserver in main.js adds `.is-revealed`. The `no-js` and
+// reduced-motion fallbacks below make sure content is *always* visible even
+// if scripting or animation is unavailable.
+// ==========================================================================
+[data-rh-reveal] {
+  opacity: 0;
+  transform: translate3d(var(--reveal-x, 0), var(--reveal-y, 22px), 0) scale(var(--reveal-scale, 1));
+  transition:
+    opacity   var(--reveal-dur, #{$dur-slow}) $ease-out-soft var(--reveal-delay, 0s),
+    transform var(--reveal-dur, #{$dur-slow}) $ease-out-soft var(--reveal-delay, 0s);
+  will-change: opacity, transform;
+}
+
+[data-rh-reveal].is-revealed {
+  opacity: 1;
+  transform: translate3d(0, 0, 1);
+  will-change: auto;
+}
+
+[data-rh-reveal='left']  { --reveal-x: -28px; --reveal-y: 0; }
+[data-rh-reveal='right'] { --reveal-x: 28px;  --reveal-y: 0; }
+[data-rh-reveal='up']    { --reveal-y: 32px; }
+[data-rh-reveal='down']  { --reveal-y: -24px; }
+[data-rh-reveal='zoom']  { --reveal-y: 14px; --reveal-scale: 0.965; }
+[data-rh-reveal='fade']  { --reveal-y: 0; }
+
+/// Staggered children: the observer sets --reveal-delay per child, but a
+/// static ladder keeps things sane before JS boots.
+@include down('md') {
+  [data-rh-reveal='left'],
+  [data-rh-reveal='right'] {
+    --reveal-x: 0;
+    --reveal-y: 24px;
+  }
+}
+
+[data-rh-stagger] > * {
+  --reveal-delay: calc(var(--stagger-index, 0) * var(--stagger-step, 80ms));
+}
+
+.no-js [data-rh-reveal],
+.no-js [data-rh-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+// ==========================================================================
+// Floating / parallax decoration
+// ==========================================================================
+@keyframes rh-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%      { transform: translate3d(0, -12px, 0); }
+}
+
+@keyframes rh-float-soft {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50%      { transform: translate3d(0, -7px, 0) rotate(1.2deg); }
+}
+
+@keyframes rh-pulse-ring {
+  0%   { transform: scale(1);    opacity: 0.55; }
+  70%  { transform: scale(1.55); opacity: 0; }
+  100% { transform: scale(1.55); opacity: 0; }
+}
+
+@keyframes rh-spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes rh-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes rh-fade-up {
+  from { opacity: 0; transform: translate3d(0, 16px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+.rh-float {
+  @include motion-safe {
+    animation: rh-float 7s $ease-in-out-soft infinite;
+    animation-delay: var(--float-delay, 0s);
+  }
+}
+
+.rh-float--soft {
+  @include motion-safe {
+    animation: rh-float-soft 9s $ease-in-out-soft infinite;
+    animation-delay: var(--float-delay, 0s);
+  }
+}
+
+/// Parallax offset written by main.js on scroll.
+[data-rh-parallax] {
+  transform: translate3d(0, var(--parallax-y, 0px), 0);
+  will-change: transform;
+}
+
+// ==========================================================================
+// Global reduced-motion kill switch
+// ==========================================================================
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  [data-rh-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  [data-rh-parallax] { transform: none !important; }
+}

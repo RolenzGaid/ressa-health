@@ -1,0 +1,66 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// --------------------------------------------------------------------------
+// Display headings — the serif voice of the brand
+// --------------------------------------------------------------------------
+.rh-display {
+  @include display-serif;
+  margin: 0;
+
+  /// Second lines in the mockup are set in a heavier italic to carry the
+  /// emphasis of the sentence. `<em>` is the semantic hook for that.
+  em, .rh-display__accent {
+    font-style: italic;
+    font-weight: 700;
+  }
+
+  strong { font-weight: 700; font-style: normal; }
+}
+
+.rh-display--xl { font-size: clamp(1.95rem, 1.35rem + 2.4vw, 2.95rem); }
+.rh-display--lg { font-size: clamp(1.8rem,  1.28rem + 2.2vw, 2.85rem); }
+.rh-display--md { font-size: clamp(1.55rem, 1.18rem + 1.7vw, 2.35rem); }
+.rh-display--sm { font-size: clamp(1.4rem,  1.15rem + 1.1vw, 1.9rem); }
+
+.rh-eyebrow      { @include eyebrow; }
+.rh-eyebrow--mut { @include eyebrow($c-muted-soft); }
+.rh-eyebrow--on-dark { @include eyebrow(rgba($c-white, 0.66)); }
+
+.rh-lede {
+  @include body-copy;
+  font-size: clamp(0.98rem, 0.93rem + 0.24vw, 1.09rem);
+  line-height: 1.75;
+  margin: 0;
+}
+
+.rh-lede--center {
+  margin-inline: auto;
+  text-align: center;
+  max-width: 46rem;
+}
+
+/// Section heads whose intro is a long single sentence get a wider measure.
+.rh-section-head--wide .rh-lede--center { max-width: 54rem; }
+
+.rh-note {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: $c-muted;
+}
+
+// --------------------------------------------------------------------------
+// Shared section header block
+// --------------------------------------------------------------------------
+.rh-section-head {
+  text-align: center;
+  max-width: 52rem;
+  margin-inline: auto;
+
+  .rh-display { margin-bottom: 1.15rem; }
+}
+
+.rh-section-head--left {
+  text-align: left;
+  margin-inline: 0;
+}

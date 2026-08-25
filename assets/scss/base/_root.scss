@@ -1,0 +1,45 @@
+@use '../abstracts/variables' as *;
+
+/// Tokens are mirrored onto :root so that block editor content, inline styles
+/// coming from the Customizer and third-party plugins can consume them.
+:root {
+  --rh-teal-900: #{$c-teal-900};
+  --rh-teal-800: #{$c-teal-800};
+  --rh-teal-700: #{$c-teal-700};
+  --rh-teal-600: #{$c-teal-600};
+  --rh-teal-500: #{$c-teal-500};
+  --rh-teal-400: #{$c-teal-400};
+
+  --rh-yellow:      #{$c-yellow-500};
+  --rh-yellow-dark: #{$c-yellow-600};
+
+  --rh-mint-500: #{$c-mint-500};
+  --rh-mint-400: #{$c-mint-400};
+  --rh-mint-300: #{$c-mint-300};
+  --rh-mint-200: #{$c-mint-200};
+
+  --rh-cream:      #{$c-cream};
+  --rh-cream-deep: #{$c-cream-deep};
+  --rh-white:      #{$c-white};
+
+  --rh-ink:       #{$c-ink};
+  --rh-ink-soft:  #{$c-ink-soft};
+  --rh-muted:     #{$c-muted};
+
+  --rh-line:      #{$c-line};
+  --rh-line-soft: #{$c-line-soft};
+
+  --rh-font-serif: #{$font-serif};
+  --rh-font-sans:  #{$font-sans};
+
+  --rh-container: #{$container};
+  --rh-header-h:  #{$header-h};
+
+  /// Multiplier switched to 0 by the reduced-motion query so that a single
+  /// token can neutralise transform-based motion everywhere at once.
+  --rh-motion: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --rh-motion: 0; }
+}

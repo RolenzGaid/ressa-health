@@ -1,0 +1,68 @@
+/* Ressa Health — meta box layout. */
+.rh-meta-intro {
+	margin: 0 0 14px;
+}
+
+.rh-meta-grid {
+	display: grid;
+	gap: 16px 20px;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.rh-meta-field--wide {
+	grid-column: 1 / -1;
+}
+
+.rh-meta-field label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 5px;
+}
+
+.rh-meta-field .description {
+	display: block;
+	margin-top: 5px;
+	font-size: 12px;
+	color: #646970;
+}
+
+.rh-media-field {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	align-items: center;
+}
+
+.rh-media-field__input {
+	flex: 1 1 260px;
+}
+
+.rh-meta-note {
+	margin-top: 16px;
+	padding-top: 12px;
+	border-top: 1px solid #e0e0e0;
+}
+
+.rh-admin-cards {
+	display: grid;
+	gap: 16px;
+	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	margin-top: 20px;
+}
+
+.rh-admin-card {
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	padding: 16px 18px;
+}
+
+.rh-admin-card h2 {
+	margin-top: 0;
+	font-size: 15px;
+}
+
+.rh-admin-count {
+	font-weight: 600;
+	color: #2271b1;
+}

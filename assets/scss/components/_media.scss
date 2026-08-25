@@ -1,0 +1,87 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// --------------------------------------------------------------------------
+// Media frame — one ratio-locked box used for every image slot in the theme.
+// When no image has been set in WordPress it renders as the flat colour block
+// shown in the design comp, so the layout never collapses.
+// --------------------------------------------------------------------------
+.rh-media {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--media-ratio, 16 / 10);
+  border-radius: var(--media-radius, #{$radius-md});
+  background: var(--media-bg, #{$c-mint-400});
+  overflow: hidden;
+  isolation: isolate;
+
+  img, video {
+    @include media-cover;
+    transition: transform $dur-slow $ease-out-soft;
+  }
+}
+
+.rh-media--yellow { --media-bg: #{$c-yellow-500}; }
+.rh-media--mint   { --media-bg: #{$c-mint-400}; }
+.rh-media--teal   { --media-bg: #{$c-teal-700}; }
+.rh-media--cream  { --media-bg: #{$c-cream-deep}; }
+
+.rh-media--square    { --media-ratio: 1 / 1; }
+.rh-media--portrait  { --media-ratio: 3 / 4; }
+.rh-media--wide      { --media-ratio: 16 / 9; }
+.rh-media--panel     { --media-ratio: 21 / 9; }
+
+.rh-media--round { --media-radius: #{$radius-lg}; }
+
+/// Slow zoom on hover, applied by any parent carrying `.rh-media-zoom`.
+.rh-media-zoom {
+  @include hover {
+    .rh-media img,
+    .rh-media video { transform: scale(1.045); }
+  }
+}
+
+/// Placeholder glyph shown in the middle of an empty media frame.
+.rh-media__placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba($c-teal-900, 0.28);
+
+  svg { width: clamp(28px, 8%, 54px); height: auto; }
+}
+
+// --------------------------------------------------------------------------
+// Icon primitives
+// --------------------------------------------------------------------------
+.rh-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: middle;
+}
+
+.rh-icon--fill { fill: currentColor; stroke: none; }
+
+.rh-icon-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: $c-mint-300;
+  color: $c-teal-700;
+  font-size: 1.25rem;
+  flex: none;
+  transition: background-color $dur-base $ease-out-soft, transform $dur-base $ease-spring;
+}

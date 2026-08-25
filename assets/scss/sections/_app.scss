@@ -1,0 +1,143 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.rh-app {
+  background: $c-cream;
+  overflow: hidden;
+}
+
+.rh-app__copy {
+  max-width: 30rem;
+
+  .rh-display { margin-bottom: 1.2rem; }
+  .rh-lede    { margin-bottom: 2rem; }
+}
+
+.rh-app__visual {
+  display: flex;
+  justify-content: center;
+}
+
+// --------------------------------------------------------------------------
+// Phone frame
+// --------------------------------------------------------------------------
+.rh-phone {
+  position: relative;
+  width: min(268px, 74vw);
+  padding: 11px;
+  border-radius: 40px;
+  background: linear-gradient(160deg, #2c3634 0%, #101817 100%);
+  box-shadow: $shadow-lg, inset 0 0 0 1px rgba($c-white, 0.09);
+
+  @include motion-safe { animation: rh-float 8s $ease-in-out-soft infinite; }
+}
+
+.rh-phone__screen {
+  position: relative;
+  aspect-ratio: 9 / 19;
+  border-radius: 30px;
+  overflow: hidden;
+  background: $c-white;
+
+  img, video { @include media-cover; }
+}
+
+/// Notch
+.rh-phone::before {
+  content: '';
+  position: absolute;
+  top: 17px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 84px;
+  height: 18px;
+  border-radius: $radius-pill;
+  background: #101817;
+  z-index: 2;
+}
+
+/// Glass sweep across the screen
+.rh-phone__glare {
+  position: absolute;
+  inset: 11px;
+  border-radius: 30px;
+  background: linear-gradient(112deg, rgba($c-white, 0) 42%, rgba($c-white, 0.24) 50%, rgba($c-white, 0) 58%);
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0.75;
+}
+
+// --------------------------------------------------------------------------
+// Placeholder screen content (used until a screenshot is uploaded)
+// --------------------------------------------------------------------------
+.rh-phone__demo {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 34px 16px 18px;
+  background: $c-white;
+}
+
+.rh-phone__demo-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 9px;
+  font-weight: 700;
+  color: $c-ink;
+  margin-bottom: 12px;
+}
+
+.rh-phone__demo-chart {
+  width: 100%;
+  height: auto;
+
+  path { stroke-linecap: round; stroke-linejoin: round; }
+}
+
+.rh-phone__demo-line {
+  fill: none;
+  stroke: $c-teal-600;
+  stroke-width: 2;
+  stroke-dasharray: 420;
+  stroke-dashoffset: 420;
+}
+
+.is-revealed .rh-phone__demo-line {
+  @include motion-safe { animation: rh-draw 2.2s $ease-out-soft 0.35s forwards; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rh-phone__demo-line { stroke-dashoffset: 0; }
+}
+
+.rh-phone__demo-area { fill: rgba($c-teal-500, 0.13); stroke: none; }
+
+.rh-phone__demo-rows {
+  display: grid;
+  gap: 7px;
+  margin-top: 14px;
+}
+
+.rh-phone__demo-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 8px;
+  border-radius: 7px;
+  background: $c-cream;
+  font-size: 8px;
+  font-weight: 600;
+  color: $c-ink-soft;
+
+  i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: $c-teal-500;
+    flex: none;
+  }
+
+  span:last-child { margin-left: auto; color: $c-muted; font-weight: 700; }
+}

@@ -1,0 +1,109 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.rh-faq { background: $c-cream; }
+
+.rh-faq__grid {
+  display: grid;
+  gap: clamp(1.75rem, 1rem + 3vw, 3.5rem);
+
+  @include up('lg') { grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr); }
+}
+
+.rh-faq__copy { max-width: 22rem; }
+
+.rh-faq__list {
+  display: grid;
+  gap: 0.6rem;
+}
+
+/// Each question is its own outlined card, matching the design comp.
+.rh-faq__item {
+  border: 1px solid $c-line;
+  border-radius: $radius-md;
+  background: $c-white;
+  padding-inline: clamp(1rem, 0.8rem + 0.6vw, 1.4rem);
+  transition: border-color $dur-fast $ease-out-soft, box-shadow $dur-base $ease-out-soft;
+
+  @include hover { border-color: rgba($c-teal-400, 0.7); }
+
+  &:has(.rh-faq__trigger[aria-expanded='true']) {
+    border-color: rgba($c-teal-400, 0.85);
+    box-shadow: $shadow-sm;
+  }
+}
+
+.rh-faq__trigger {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  width: 100%;
+  padding: 1.05rem 0;
+  text-align: left;
+  font-family: $font-sans;
+  font-size: 0.94rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: $c-ink-soft;
+  transition: color $dur-fast $ease-out-soft;
+
+  @include hover { color: $c-teal-700; }
+
+  &[aria-expanded='true'] { color: $c-teal-800; font-weight: 700; }
+}
+
+.rh-faq__q { flex: 1 1 auto; }
+
+.rh-faq__icon {
+  position: relative;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  border-radius: 50%;
+  color: $c-teal-600;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background: currentColor;
+    border-radius: 2px;
+    transition: transform $dur-base $ease-spring, opacity $dur-fast linear;
+  }
+
+  &::before { width: 12px; height: 1.8px; transform: translate(-50%, -50%); }
+  &::after  { width: 1.8px; height: 12px; transform: translate(-50%, -50%); }
+
+  [aria-expanded='true'] & {
+    &::after { transform: translate(-50%, -50%) rotate(90deg); opacity: 0; }
+    &::before { transform: translate(-50%, -50%) rotate(180deg); }
+  }
+}
+
+/// Height is animated by main.js via an explicit pixel value so the panel can
+/// ease open; the CSS keeps a clean closed state without JS.
+.rh-faq__panel {
+  overflow: hidden;
+  height: 0;
+  transition: height 0.42s $ease-out-soft, opacity $dur-base $ease-out-soft;
+  opacity: 0;
+}
+
+.rh-faq__panel.is-open { opacity: 1; }
+
+.rh-faq__answer {
+  padding: 0 2rem 1.25rem 0;
+  font-size: 0.9rem;
+  line-height: 1.75;
+  color: $c-muted;
+  margin: 0;
+}
+
+.no-js .rh-faq__panel { height: auto; opacity: 1; }
+
+@include down('lg') {
+  .rh-faq__copy { max-width: none; }
+}

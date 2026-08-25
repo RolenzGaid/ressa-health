@@ -1,0 +1,51 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.rh-cta {
+  position: relative;
+  background: $c-teal-800;
+  color: $c-white;
+  text-align: center;
+  overflow: hidden;
+}
+
+/// Two very soft radial washes give the flat teal band some depth without
+/// introducing any new visual element.
+.rh-cta::before,
+.rh-cta::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.rh-cta::before {
+  width: 640px; height: 640px;
+  top: -55%; left: -12%;
+  background: radial-gradient(circle, rgba($c-teal-400, 0.3) 0%, rgba($c-teal-800, 0) 68%);
+}
+
+.rh-cta::after {
+  width: 560px; height: 560px;
+  bottom: -60%; right: -8%;
+  background: radial-gradient(circle, rgba($c-yellow-500, 0.14) 0%, rgba($c-teal-800, 0) 68%);
+}
+
+.rh-cta__inner {
+  @include container($container-slim);
+  position: relative;
+  z-index: 1;
+}
+
+.rh-cta__title {
+  color: $c-white;
+  margin: 0 0 1rem;
+}
+
+.rh-cta__lede {
+  color: rgba($c-white, 0.78);
+  max-width: 36rem;
+  margin: 0 auto 2rem;
+}
+
+.rh-cta__actions { justify-content: center; }

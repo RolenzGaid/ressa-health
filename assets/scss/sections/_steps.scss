@@ -1,0 +1,210 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.rh-steps {
+  background: $c-white;
+  overflow: hidden;
+}
+
+.rh-steps__head { margin-bottom: clamp(2rem, 1.2rem + 2.6vw, 3.25rem); }
+
+// --------------------------------------------------------------------------
+// Pinned scroller
+// --------------------------------------------------------------------------
+// The wrapper is `--step-count` screens tall; the inner panel pins to the
+// viewport while the page scrolls through it and JS swaps the current step.
+// --------------------------------------------------------------------------
+.rh-steps__scroller {
+  position: relative;
+}
+
+.rh-steps__sticky {
+  @include container;
+}
+
+@include up('lg') {
+  .rh-steps__scroller {
+    height: calc((var(--step-count, 3) - 1) * 92vh + 100vh);
+  }
+
+  .rh-steps__sticky {
+    position: sticky;
+    top: calc(#{$header-h} + 8px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: calc(100vh - #{$header-h} - 40px);
+    padding-block: 1.5rem;
+  }
+}
+
+// --------------------------------------------------------------------------
+// Test / Analyze / Act rail
+// --------------------------------------------------------------------------
+.rh-steps__rail {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.55rem;
+  margin: 0 0 clamp(1.5rem, 1rem + 1.6vw, 2.4rem);
+}
+
+.rh-steps__rail-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.62em 1.35em;
+  border: 1px solid $c-line;
+  border-radius: $radius-pill;
+  background: $c-white;
+  color: $c-muted;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  line-height: 1;
+  overflow: hidden;
+  isolation: isolate;
+  transition: color $dur-base $ease-out-soft, border-color $dur-base $ease-out-soft;
+
+  /// A yellow bar sweeps left-to-right in time with the scroll progress of
+  /// the current step, so the rail doubles as a progress indicator.
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: rgba($c-yellow-500, 0.9);
+    transform: scaleX(var(--rail-fill, 0));
+    transform-origin: left center;
+    transition: transform 0.25s linear;
+  }
+
+  @include hover { color: $c-ink; border-color: $c-teal-400; }
+
+  &[aria-selected='true'] {
+    background: $c-teal-700;
+    color: $c-white;
+    border-color: $c-teal-700;
+  }
+}
+
+.rh-steps__rail-num {
+  font-variant-numeric: tabular-nums;
+  opacity: 0.65;
+}
+
+// --------------------------------------------------------------------------
+// Stage
+// --------------------------------------------------------------------------
+.rh-steps__stage {
+  position: relative;
+  display: grid;
+}
+
+.rh-step {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate3d(0, calc(34px * var(--rh-motion)), 0);
+  transition:
+    opacity    0.5s $ease-out-soft,
+    transform  0.62s $ease-out-soft,
+    visibility 0.5s;
+}
+
+.rh-step.is-current {
+  opacity: 1;
+  visibility: visible;
+  transform: translate3d(0, 0, 0);
+  position: relative;
+  z-index: 2;
+}
+
+/// Steps already scrolled past leave upward, so the sequence reads as a
+/// single vertical filmstrip in both directions.
+.rh-step.is-past {
+  transform: translate3d(0, calc(-34px * var(--rh-motion)), 0);
+}
+
+.rh-step__tags {
+  justify-content: center;
+  margin-bottom: 1.15rem;
+}
+
+.rh-step__media {
+  width: min(100%, 560px);
+  --media-ratio: 16 / 9;
+  --media-radius: #{$radius-lg};
+  border-radius: $radius-lg;
+  box-shadow: $shadow-md;
+}
+
+.rh-step__body {
+  max-width: 34rem;
+  margin-top: 1.6rem;
+}
+
+.rh-step__label {
+  @include eyebrow($c-muted-soft);
+  margin-bottom: 0.7rem;
+}
+
+.rh-step__title {
+  font-family: $font-serif;
+  font-size: clamp(1.3rem, 1.05rem + 1.1vw, 1.85rem);
+  font-weight: 600;
+  line-height: 1.22;
+  color: $c-ink;
+  margin: 0 0 0.75rem;
+}
+
+.rh-step__text {
+  font-size: 0.98rem;
+  line-height: 1.72;
+  color: $c-muted;
+  margin: 0;
+}
+
+/// Children of the current step ladder in behind it.
+.rh-step.is-current > * {
+  @include motion-safe {
+    animation: rh-fade-up 0.55s $ease-out-soft backwards;
+    animation-delay: calc(90ms + var(--stagger-index, 0) * 90ms);
+  }
+}
+
+// --------------------------------------------------------------------------
+// Static stacked fallback: small screens, no-JS and reduced motion
+// --------------------------------------------------------------------------
+@mixin steps-stacked {
+  .rh-steps__scroller { height: auto; }
+  .rh-steps__sticky   { position: static; min-height: 0; }
+
+  .rh-steps__stage {
+    display: grid;
+    gap: clamp(2.5rem, 1.5rem + 4vw, 4rem);
+  }
+
+  .rh-step {
+    grid-area: auto;
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  .rh-step.is-current > * { animation: none; }
+}
+
+@include down('lg') { @include steps-stacked; }
+.no-js .rh-steps { @include steps-stacked; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rh-steps { @include steps-stacked; }
+}
