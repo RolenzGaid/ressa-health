@@ -17,10 +17,9 @@
 .rh-section--tight  { padding-block: clamp(2.75rem, 1.9rem + 3.6vw, 4.5rem); }
 .rh-section--roomy  { padding-block: clamp(4.25rem, 2.6rem + 6.8vw, 8rem); }
 
-.rh-section--cream      { background: $c-cream; }
-.rh-section--cream-deep { background: $c-cream-deep; }
-.rh-section--white      { background: $c-white; }
-.rh-section--mint       { background: $c-mint-200; }
+.rh-section--surface { background: $c-surface; }
+.rh-section--alt     { background: $c-surface-alt; }
+.rh-section--mint    { background: $c-mint-200; }
 
 .rh-section--teal {
   background: $c-teal-800;

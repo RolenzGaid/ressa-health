@@ -20,7 +20,10 @@
 
 [data-rh-reveal].is-revealed {
   opacity: 1;
-  transform: translate3d(0, 0, 1);
+  /// Every component of translate3d must carry a unit — a bare `1` here makes
+  /// the whole declaration invalid and elements never return to their
+  /// laid-out position.
+  transform: translate3d(0, 0, 0);
   will-change: auto;
 }
 

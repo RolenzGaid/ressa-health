@@ -1,0 +1,29 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// --------------------------------------------------------------------------
+// Back-to-top
+// --------------------------------------------------------------------------
+.rh-to-top {
+  position: fixed;
+  right: clamp(14px, 2vw, 28px);
+  bottom: clamp(14px, 2vw, 28px);
+  z-index: 90;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: $c-teal-700;
+  color: $c-white;
+  box-shadow: $shadow-md;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: opacity $dur-base $ease-out-soft, transform $dur-base $ease-out-soft, visibility $dur-base, background-color $dur-fast;
+
+  &.is-visible { opacity: 1; visibility: visible; transform: translateY(0); }
+
+  @include hover { background: $c-teal-800; }
+}

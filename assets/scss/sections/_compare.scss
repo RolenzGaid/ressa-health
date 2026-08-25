@@ -2,8 +2,19 @@
 @use '../abstracts/mixins' as *;
 
 .rh-compare {
-  background: $c-cream-deep;
+  background: $c-surface-alt;
   overflow: hidden;
+}
+
+/// The table runs past the right-hand edge of the standard container, as in
+/// the design: the copy keeps the container's left gutter, the table does not.
+.rh-compare__inner {
+  @include up('lg') {
+    max-width: none;
+    margin-inline: 0;
+    padding-left: max(#{$gutter}, calc((100vw - #{$container}) / 2));
+    padding-right: clamp(1.25rem, 3.4vw, 3rem);
+  }
 }
 
 .rh-compare__grid {
@@ -11,11 +22,11 @@
   gap: clamp(2rem, 1rem + 3.5vw, 4rem);
   align-items: center;
 
-  @include up('lg') { grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr); }
+  @include up('lg') { grid-template-columns: minmax(0, 0.62fr) minmax(0, 1.38fr); }
 }
 
 .rh-compare__copy {
-  max-width: 26rem;
+  max-width: 25rem;
 
   .rh-display { margin-bottom: 1.15rem; }
 }
@@ -23,32 +34,68 @@
 // --------------------------------------------------------------------------
 // Table
 // --------------------------------------------------------------------------
-.rh-compare__table-wrap {
-  background: $c-white;
-  border: 1px solid $c-line-soft;
-  border-radius: $radius-lg;
-  box-shadow: $shadow-sm;
-  overflow: hidden;
+.rh-compare {
+  --compare-col: 152px;
+}
 
-  /// Guarantees the table never forces the page to scroll sideways.
+.rh-compare__table-wrap {
+  position: relative;
+
   @include down('md') { overflow-x: auto; }
+}
+
+/// Tinted band behind the Ressa Health column. It sits outside the table so it
+/// can extend a little above and below it, the way the design shows.
+.rh-compare__table-wrap::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: calc(var(--compare-col) + 1px);
+  width: var(--compare-col);
+  border-radius: 10px;
+  background: $c-mint-200;
+  pointer-events: none;
+
+  @include down('md') { display: none; }
+}
+
+@include up('md') {
+  .rh-compare__table-wrap { padding-block: 13px; }
+}
+
+.rh-compare__frame {
+  position: relative;
+  border: 1px solid $c-line;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .rh-compare__table {
   width: 100%;
-  min-width: 460px;
+  min-width: 540px;
   border-collapse: collapse;
+  background: transparent;
   font-size: 0.86rem;
+  /// Fixed layout so the two mark columns are exactly --compare-col wide and
+  /// the tinted band behind them lines up.
+  table-layout: fixed;
 
-  th, td { padding: 0.88rem 1rem; vertical-align: middle; }
+  th, td { padding: 0.9rem 1.15rem; vertical-align: middle; }
+
+  /// Cells carry the white, not the table, so the tinted band shows through
+  /// the one column that is left transparent.
+  thead th, tbody th, tbody td { background: $c-white; }
+
+  thead th:first-child { text-align: left; }
 
   thead th {
     font-family: $font-sans;
     font-size: 0.68rem;
-    font-weight: 800;
-    letter-spacing: 0.11em;
+    font-weight: 700;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: $c-muted;
+    color: $c-teal-500;
     border-bottom: 1px solid $c-line-soft;
     white-space: nowrap;
   }
@@ -58,29 +105,22 @@
 
   tbody th {
     text-align: left;
-    font-weight: 600;
+    font-weight: 400;
     color: $c-ink-soft;
     line-height: 1.45;
   }
 
-  /// Column 2 is Ressa Health — tinted so the comparison reads at a glance.
   th:nth-child(2), td:nth-child(2) {
-    background: rgba($c-mint-300, 0.42);
+    background: transparent;
     text-align: center;
-    width: 118px;
+    width: var(--compare-col);
+    padding-inline: 0.7rem;
   }
 
   th:nth-child(3), td:nth-child(3) {
     text-align: center;
-    width: 118px;
-  }
-
-  thead th:nth-child(2) { color: $c-teal-800; }
-
-  tbody tr {
-    transition: background-color $dur-fast $ease-out-soft;
-
-    @include hover { background: rgba($c-mint-200, 0.5); }
+    width: var(--compare-col);
+    padding-inline: 0.7rem;
   }
 }
 
@@ -90,11 +130,23 @@
   justify-content: center;
   width: 22px;
   height: 22px;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
 }
 
-.rh-compare__mark--yes { color: $c-teal-600; }
-.rh-compare__mark--no  { color: rgba($c-ink, 0.24); }
+.rh-compare__mark--yes { color: $c-teal-500; }
+
+.rh-compare__mark--no {
+  color: $c-ink;
+
+  .rh-icon { stroke-width: 2.4; }
+}
+
+.rh-compare__mark--partial { color: $c-muted-soft; }
+
+.rh-compare__tilde {
+  font-size: 1.15rem;
+  line-height: 1;
+}
 
 /// Ticks draw themselves in as the table scrolls into view.
 .rh-compare__mark--yes svg path {

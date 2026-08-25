@@ -1,7 +1,7 @@
 @use '../abstracts/variables' as *;
 @use '../abstracts/mixins' as *;
 
-.rh-team { background: $c-cream-deep; }
+.rh-team { background: $c-surface; }
 
 .rh-team__head { margin-bottom: clamp(2rem, 1.3rem + 2.4vw, 3.25rem); }
 

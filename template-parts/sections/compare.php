@@ -14,7 +14,7 @@ if ( ! $ressa_rows ) {
 }
 ?>
 <?php ressa_section_open( 'compare', array( 'labelledby' => 'compare-title' ) ); ?>
-	<div class="rh-container">
+	<div class="rh-container rh-compare__inner">
 		<div class="rh-compare__grid">
 
 			<div class="rh-compare__copy" data-rh-reveal="left" data-rh-stagger>
@@ -28,13 +28,14 @@ if ( ! $ressa_rows ) {
 			</div>
 
 			<div class="rh-compare__table-wrap" data-rh-reveal="right">
+				<div class="rh-compare__frame">
 				<table class="rh-compare__table">
 					<caption class="screen-reader-text">
 						<?php esc_html_e( 'How Ressa Health compares with single-layer health products', 'ressa-health' ); ?>
 					</caption>
 					<thead>
 						<tr>
-							<th scope="col"><span class="screen-reader-text"><?php esc_html_e( 'Capability', 'ressa-health' ); ?></span></th>
+							<th scope="col"><?php echo esc_html( wp_strip_all_tags( ressa_opt( 'compare_col_feature' ) ) ); ?></th>
 							<th scope="col"><?php echo esc_html( wp_strip_all_tags( ressa_opt( 'compare_col_ours' ) ) ); ?></th>
 							<th scope="col"><?php echo esc_html( wp_strip_all_tags( ressa_opt( 'compare_col_other' ) ) ); ?></th>
 						</tr>
@@ -49,6 +50,7 @@ if ( ! $ressa_rows ) {
 						<?php endforeach; ?>
 					</tbody>
 				</table>
+				</div>
 			</div>
 
 		</div>

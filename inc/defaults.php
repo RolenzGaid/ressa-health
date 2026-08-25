@@ -30,14 +30,14 @@ function ressa_default_options() {
 		// -- Header ---------------------------------------------------------
 		'brand_name'        => 'Ressa',
 		'brand_name_alt'    => 'Health',
-		'header_cta_label'  => 'Get Started',
+		'header_cta_label'  => 'Professionals',
 		'header_cta_url'    => '#start',
-		'header_search_url' => '#search',
+		'header_search_url' => '#start',
 
 		// -- Hero -----------------------------------------------------------
 		'hero_eyebrow'      => 'The Story of You',
-		'hero_title'        => 'Your labs came back normal.<br><em>You knew something was still wrong.</em>',
-		'hero_lede'         => 'You weren&rsquo;t imagining it &mdash; you were being read one layer at a time. Ressa Health reads your labs, wearables, genomics and history together, and finds the pattern no single source can see.',
+		'hero_title'        => 'Your labs came back normal.<br><strong>You <em>knew</em> something was still wrong.</strong>',
+		'hero_lede'         => 'You weren&rsquo;t imagining it &mdash; you were just never fully seen. Ressa Health reads your health across seven sources, not one, to tell the whole story your panel left out.',
 		'hero_cta_label'    => 'Start Your Story',
 		'hero_cta_url'      => '#start',
 		'hero_alt_label'    => 'See How It Works',
@@ -51,8 +51,8 @@ function ressa_default_options() {
 		'problem_cta_url'   => '#how-it-works',
 
 		// -- Manifesto ------------------------------------------------------
-		'manifesto_title'   => 'You are not a result.<br><em>You are a story.</em>',
-		'manifesto_lede'    => 'Reference ranges describe populations, not people. Two people with identical numbers can be living completely different lives &mdash; because the meaning was never in the value. It is in the pattern that runs through all of it.',
+		'manifesto_title'   => 'You are not a result.<br><strong>You are <em class="rh-accent">a story.</em></strong>',
+		'manifesto_lede'    => 'Written in more than one language at once &mdash; your blood, your genes, your microbiome, your sleep, your imaging, your history, your lived experience. No single one is you. You&rsquo;re the pattern that runs through all of them.',
 
 		// -- Seven layers ---------------------------------------------------
 		'layers_eyebrow'    => 'Why We&rsquo;re Different',
@@ -80,10 +80,11 @@ function ressa_default_options() {
 
 		// -- Comparison -----------------------------------------------------
 		'compare_eyebrow'   => 'How We Compare',
-		'compare_title'     => 'One panel,<br><em>or the whole picture.</em>',
-		'compare_lede'      => 'Every other product reads a single layer and hands you a number. Ressa Health reads all seven and hands you the meaning. The difference was never more data &mdash; it is what happens once somebody finally reads it together.',
+		'compare_title'     => 'One panel,<br>or <em>the whole picture.</em>',
+		'compare_lede'      => 'Every other company in this space is built to sell you a panel &mdash; their economics depend on you ordering it. That single constraint shapes everything they can and can&rsquo;t offer you. Here&rsquo;s what the difference actually looks like, side by side.',
+		'compare_col_feature' => 'Feature',
 		'compare_col_ours'  => 'Ressa Health',
-		'compare_col_other' => 'Everyone Else',
+		'compare_col_other' => 'Standard Visit',
 
 		// -- Stories --------------------------------------------------------
 		'stories_eyebrow'   => 'Real Stories',
@@ -108,10 +109,6 @@ function ressa_default_options() {
 		'cta_label'         => 'Start Your Story',
 		'cta_url'           => '#start',
 
-		// -- Footer ---------------------------------------------------------
-		'footer_blurb'      => 'The intelligence layer that reads every layer of your health as one story.',
-		'footer_copyright'  => '&copy; {year} Ressa Health. All rights reserved.',
-		'footer_disclaimer' => 'Ressa Health is not a diagnostic service and does not replace medical care.',
 	);
 
 	return $defaults;
@@ -296,47 +293,52 @@ function ressa_default_items( $type ) {
 
 		'rh_compare' => array(
 			array(
-				'title' => 'Reads a lab panel you already paid for',
+				'title' => 'Comprehensive biomarker testing (100+)',
+				'ours'  => 'yes',
+				'other' => 'partial',
+			),
+			array(
+				'title' => 'Historical pattern analysis over time',
+				'ours'  => 'yes',
+				'other' => 'no',
+			),
+			array(
+				'title' => 'Wearable + CGM data integration',
+				'ours'  => 'yes',
+				'other' => 'no',
+			),
+			array(
+				'title' => 'Upload past labs from any provider',
+				'ours'  => 'yes',
+				'other' => 'no',
+			),
+			array(
+				'title' => 'AI-driven cross-marker insights',
+				'ours'  => 'yes',
+				'other' => 'no',
+			),
+			array(
+				'title' => 'Optimal ranges (beyond standard reference)',
+				'ours'  => 'yes',
+				'other' => 'no',
+			),
+			array(
+				'title' => 'Physician-reviewed insights',
 				'ours'  => 'yes',
 				'other' => 'yes',
 			),
 			array(
-				'title' => 'Explains each marker in plain language',
-				'ours'  => 'yes',
-				'other' => 'yes',
-			),
-			array(
-				'title' => 'Cross-references seven separate data layers',
+				'title' => 'Plain-language explanations',
 				'ours'  => 'yes',
 				'other' => 'no',
 			),
 			array(
-				'title' => 'Reads wearables alongside your bloodwork',
+				'title' => 'No referral needed',
 				'ours'  => 'yes',
-				'other' => 'no',
+				'other' => 'partial',
 			),
 			array(
-				'title' => 'Tracks change across months, not moments',
-				'ours'  => 'yes',
-				'other' => 'no',
-			),
-			array(
-				'title' => 'Surfaces patterns no single panel can show',
-				'ours'  => 'yes',
-				'other' => 'no',
-			),
-			array(
-				'title' => 'Physician-designed and physician-reviewed',
-				'ours'  => 'yes',
-				'other' => 'no',
-			),
-			array(
-				'title' => 'Practitioner network built in',
-				'ours'  => 'yes',
-				'other' => 'no',
-			),
-			array(
-				'title' => 'One story instead of nine dashboards',
+				'title' => 'Free plan available',
 				'ours'  => 'yes',
 				'other' => 'no',
 			),

@@ -33,6 +33,12 @@ if ( ! $ressa_steps ) {
 
 			<div class="rh-steps__rail" role="tablist" aria-label="<?php esc_attr_e( 'Process steps', 'ressa-health' ); ?>">
 				<?php foreach ( $ressa_steps as $ressa_index => $ressa_step ) : ?>
+					<?php if ( $ressa_index > 0 ) : ?>
+						<span class="rh-steps__link" aria-hidden="true" data-step-link="<?php echo (int) ( $ressa_index - 1 ); ?>">
+							<i></i>
+						</span>
+					<?php endif; ?>
+
 					<button
 						class="rh-steps__rail-btn"
 						type="button"
@@ -43,8 +49,7 @@ if ( ! $ressa_steps ) {
 						tabindex="<?php echo 0 === $ressa_index ? '0' : '-1'; ?>"
 						data-step-index="<?php echo (int) $ressa_index; ?>"
 					>
-						<span class="rh-steps__rail-num"><?php echo esc_html( sprintf( '%02d', $ressa_index + 1 ) ); ?></span>
-						<span><?php echo esc_html( ressa_item( $ressa_step, 'rail_label', ressa_item( $ressa_step, 'title' ) ) ); ?></span>
+						<?php echo esc_html( ressa_item( $ressa_step, 'rail_label', ressa_item( $ressa_step, 'title' ) ) ); ?>
 					</button>
 				<?php endforeach; ?>
 			</div>

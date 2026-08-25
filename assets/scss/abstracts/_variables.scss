@@ -4,34 +4,40 @@
 
 // --------------------------------------------------------------------------
 // Colour ramp
+//
+// One brand green (#118c8c) carries every green in the design. The darker
+// steps exist only for the closing CTA band; the lighter ones are tints of the
+// same hue so nothing drifts away from it.
 // --------------------------------------------------------------------------
-$c-teal-900:   #093f3b;
-$c-teal-800:   #0b514c;
-$c-teal-700:   #0f5d57;
-$c-teal-600:   #14716a;
-$c-teal-500:   #1a8f85;
-$c-teal-400:   #35a79d;
+$c-teal-900:   #084a4a;
+$c-teal-800:   #0c6363;
+$c-teal-700:   #118c8c;
+$c-teal-600:   #0f7d7d;
+$c-teal-500:   #118c8c;
+$c-teal-400:   #3ba7a7;
 
-$c-yellow-500: #f6c445;
-$c-yellow-600: #eab528;
-$c-yellow-700: #d9a417;
+$c-yellow-500: #f2bb16;
+$c-yellow-600: #d9a70e;
+$c-yellow-700: #bf9309;
 
-$c-mint-500:   #a9cec0;
-$c-mint-400:   #bcdccf;
-$c-mint-300:   #cfe6dc;
-$c-mint-200:   #e2f0ea;
+$c-mint-500:   #a8d5d4;
+$c-mint-400:   #c2e2e1;
+$c-mint-300:   #d9edec;
+$c-mint-200:   #eaf5f4;
 
-$c-cream:      #faf8f2;
-$c-cream-deep: #f4f1e8;
-$c-white:      #ffffff;
+// Page surfaces: white throughout, with one soft off-white for the two
+// sections that sit back from it.
+$c-surface:     #ffffff;
+$c-surface-alt: #fafaf7;
+$c-white:       #ffffff;
 
 $c-ink:        #16211f;
 $c-ink-soft:   #33403d;
 $c-muted:      #5e6b68;
 $c-muted-soft: #8a9491;
 
-$c-line:       #e2ddd1;
-$c-line-soft:  #eeebe2;
+$c-line:       #e6e6e0;
+$c-line-soft:  #f0f0ea;
 
 // --------------------------------------------------------------------------
 // Typography

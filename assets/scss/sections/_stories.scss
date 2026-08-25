@@ -2,7 +2,7 @@
 @use '../abstracts/mixins' as *;
 
 .rh-stories {
-  background: $c-cream;
+  background: $c-surface;
   overflow: hidden;
 }
 
@@ -77,6 +77,7 @@
 // --- Video card ------------------------------------------------------------
 .rh-story--video { background: $c-mint-300; }
 
+
 .rh-story__media {
   position: absolute;
   inset: 0;
@@ -116,13 +117,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 58px;
-  height: 58px;
+  width: 66px;
+  height: 66px;
   border-radius: 50%;
-  background: rgba($c-white, 0.92);
-  color: $c-teal-800;
-  font-size: 1.05rem;
-  box-shadow: 0 6px 22px rgba($c-teal-900, 0.28);
+  border: 2px solid rgba($c-white, 0.95);
+  background: transparent;
+  color: $c-white;
+  font-size: 1.2rem;
   transition: transform $dur-base $ease-spring, opacity $dur-base $ease-out-soft, background-color $dur-fast;
 
   svg { margin-left: 3px; }
@@ -131,9 +132,9 @@
   &::before {
     content: '';
     position: absolute;
-    inset: 0;
+    inset: -1px;
     border-radius: 50%;
-    border: 2px solid rgba($c-white, 0.75);
+    border: 2px solid rgba($c-white, 0.6);
 
     @include motion-safe { animation: rh-pulse-ring 2.8s $ease-out-soft infinite; }
   }
@@ -180,15 +181,15 @@
   text-align: left;
   gap: 0.7rem;
   padding: clamp(1.05rem, 0.8rem + 1vw, 1.6rem);
-  background: $c-mint-300;
+  background: $c-mint-200;
   color: $c-teal-900;
 }
 
 .rh-story__quote-mark {
   font-family: $font-serif;
-  font-size: 1.85rem;
+  font-size: 2rem;
   line-height: 0.6;
-  color: rgba($c-teal-800, 0.35);
+  color: $c-teal-500;
 }
 
 .rh-story__quote {

@@ -167,20 +167,22 @@ function ressa_post_types() {
 			'supports_image' => false,
 			'fields'        => array(
 				'ours'  => array(
-					'label'   => __( 'Ressa Health', 'ressa-health' ),
+					'label'   => __( 'Ressa Health column', 'ressa-health' ),
 					'type'    => 'select',
 					'options' => array(
-						'yes' => __( 'Included', 'ressa-health' ),
-						'no'  => __( 'Not included', 'ressa-health' ),
+						'yes'     => __( 'Included (tick)', 'ressa-health' ),
+						'partial' => __( 'Partial (tilde)', 'ressa-health' ),
+						'no'      => __( 'Not included (cross)', 'ressa-health' ),
 					),
 					'default' => 'yes',
 				),
 				'other' => array(
-					'label'   => __( 'Everyone else', 'ressa-health' ),
+					'label'   => __( 'Comparison column', 'ressa-health' ),
 					'type'    => 'select',
 					'options' => array(
-						'yes' => __( 'Included', 'ressa-health' ),
-						'no'  => __( 'Not included', 'ressa-health' ),
+						'yes'     => __( 'Included (tick)', 'ressa-health' ),
+						'partial' => __( 'Partial (tilde)', 'ressa-health' ),
+						'no'      => __( 'Not included (cross)', 'ressa-health' ),
 					),
 					'default' => 'no',
 				),
@@ -323,6 +325,7 @@ function ressa_customizer_schema() {
 				'compare_eyebrow'   => array( 'label' => __( 'Eyebrow', 'ressa-health' ), 'type' => $text ),
 				'compare_title'     => array( 'label' => __( 'Headline', 'ressa-health' ), 'type' => $textarea, 'help' => $heading_help ),
 				'compare_lede'      => array( 'label' => __( 'Paragraph', 'ressa-health' ), 'type' => $textarea ),
+				'compare_col_feature' => array( 'label' => __( 'First column heading', 'ressa-health' ), 'type' => $text ),
 				'compare_col_ours'  => array( 'label' => __( 'Our column heading', 'ressa-health' ), 'type' => $text ),
 				'compare_col_other' => array( 'label' => __( 'Their column heading', 'ressa-health' ), 'type' => $text ),
 			),
@@ -371,14 +374,6 @@ function ressa_customizer_schema() {
 			),
 		),
 
-		'footer' => array(
-			'title'  => __( 'Footer', 'ressa-health' ),
-			'fields' => array(
-				'footer_blurb'      => array( 'label' => __( 'Brand blurb', 'ressa-health' ), 'type' => $textarea ),
-				'footer_copyright'  => array( 'label' => __( 'Copyright line', 'ressa-health' ), 'type' => $text, 'help' => __( '{year} is replaced with the current year.', 'ressa-health' ) ),
-				'footer_disclaimer' => array( 'label' => __( 'Disclaimer', 'ressa-health' ), 'type' => $text ),
-			),
-		),
 	);
 }
 

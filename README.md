@@ -62,12 +62,12 @@ Each repeating group is a custom post type with its own fields. Drag the **Order
 | Platform Features | The six-card grid | Featured image is the card visual. |
 | Member Stories | The story carousel | Choose **Video** or **Pull quote** per slide. Video slides play muted on hover. |
 | Team Members | The medical team row | Featured image is the portrait. |
-| Comparison Rows | The comparison table | Two dropdowns per row: included / not included. |
+| Comparison Rows | The comparison table | Two dropdowns per row: tick, tilde (partial) or cross. |
 | Trust Promises | The four mint cards | |
 | FAQs | The accordion | |
 
-Menus: **Appearance → Menus** provides *Primary*, three footer columns and a legal row. Until a
-menu is assigned, the header falls back to the navigation shown in the design.
+Menus: **Appearance → Menus** provides a *Primary* location for the masthead. Until a menu is
+assigned, the header falls back to the navigation shown in the design.
 
 Logo: **Appearance → Customize → Site Identity** replaces the placeholder brand mark.
 
@@ -117,13 +117,24 @@ npm run build:css   # compressed production build
 assets/scss
 ├── abstracts/   tokens and mixins
 ├── base/        reset, root custom properties, typography, animation primitives
-├── layout/      container scale, header, footer
+├── layout/      container scale, header, back-to-top
 ├── components/  buttons, pills, media frames, WordPress core markup
 └── sections/    one partial per band of the front page
 ```
 
 Design tokens live in `abstracts/_variables.scss` and are mirrored onto `:root` in
 `base/_root.scss`, so the same palette is available to the block editor and to inline styles.
+
+The palette is deliberately small:
+
+| Token | Value | Used for |
+|---|---|---|
+| `$c-teal-500` | `#118c8c` | every green on the page — eyebrows, ticks, active states, the wheel |
+| `$c-teal-800` | `#0c6363` | the closing CTA band only |
+| `$c-yellow-500` | `#f2bb16` | every button, always with white text |
+| `$c-surface` | `#ffffff` | the page, and all but two sections |
+| `$c-surface-alt` | `#fafaf7` | How It Works and How We Compare |
+| `$c-mint-200` | `#eaf5f4` | pull-quote cards, the highlighted comparison column |
 
 ## Template map
 
@@ -162,8 +173,8 @@ icon-only control, and a comparison table built from `<th scope>` with a caption
 
 ## Notes
 
-* The design comp ends at the closing call to action. A compact footer (brand, three link columns,
-  legal row) has been added because a WordPress theme needs one; it uses the same tokens and can be
-  hidden by removing the menus.
+* This is a landing page: it ends on the closing call to action and has no footer band. `footer.php`
+  only closes the document and renders the back-to-top control.
+* The hero is sized so the masthead plus the hero come to exactly one viewport height.
 * `.preview/` contains the local render harness used to check the build against the comp. It is not
   part of the theme and is excluded from version control.

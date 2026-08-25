@@ -227,16 +227,26 @@ function ressa_brand( $context = 'header' ) {
 }
 
 /**
- * Placeholder brand mark: concentric rings reading as layered data.
+ * Placeholder brand mark: a small constellation of data points in the two
+ * brand colours. Replaced by uploading a logo under Site Identity.
  *
  * @return string
  */
 function ressa_brand_mark() {
-	return '<svg class="rh-brand__mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-		<circle cx="16" cy="16" r="14.2" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.35"/>
-		<circle cx="16" cy="16" r="9.2" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
-		<circle cx="16" cy="16" r="4.2" fill="currentColor"/>
-		<path d="M16 1.8A14.2 14.2 0 0 1 30.2 16" fill="none" stroke="#f6c445" stroke-width="2.6" stroke-linecap="round"/>
+	return '<svg class="rh-brand__mark" viewBox="0 0 34 34" aria-hidden="true" focusable="false">
+		<g fill="#118c8c">
+			<circle cx="6" cy="7" r="3.4"/>
+			<circle cx="17.5" cy="13" r="4.4"/>
+			<circle cx="6.5" cy="19.5" r="2.4"/>
+		</g>
+		<g fill="#f2bb16">
+			<circle cx="7" cy="27.5" r="4"/>
+			<circle cx="17" cy="24" r="2.6"/>
+		</g>
+		<g stroke="#118c8c" stroke-width="1.4" stroke-linecap="round" opacity="0.55">
+			<path d="M8.6 8.6 14.4 11.4"/>
+			<path d="M8.2 17.6 14.1 15.2"/>
+		</g>
 	</svg>';
 }
 
@@ -276,6 +286,7 @@ function ressa_fallback_menu( $class ) {
 		'#team'    => __( 'Find a Practitioner', 'ressa-health' ),
 	);
 
+
 	printf( '<ul class="%s">', esc_attr( $class ) );
 
 	$index = 0;
@@ -294,59 +305,29 @@ function ressa_fallback_menu( $class ) {
 }
 
 /**
- * Placeholder footer column links.
+ * Render a comparison table mark.
  *
- * @param string $location Menu location key.
- */
-function ressa_fallback_footer_menu( $location ) {
-	$columns = array(
-		'footer_one'   => array(
-			'#steps'    => __( 'How It Works', 'ressa-health' ),
-			'#layers'   => __( 'The Seven Layers', 'ressa-health' ),
-			'#features' => __( 'The Platform', 'ressa-health' ),
-			'#compare'  => __( 'Pricing', 'ressa-health' ),
-		),
-		'footer_two'   => array(
-			'#team'  => __( 'Medical Team', 'ressa-health' ),
-			'#trust' => __( 'Our Promises', 'ressa-health' ),
-			'#faq'   => __( 'FAQ', 'ressa-health' ),
-			'#start' => __( 'Get Started', 'ressa-health' ),
-		),
-		'footer_three' => array(
-			'#stories' => __( 'Member Stories', 'ressa-health' ),
-			'#faq'     => __( 'Learn', 'ressa-health' ),
-			'#team'    => __( 'Find a Practitioner', 'ressa-health' ),
-			'#start'   => __( 'Contact', 'ressa-health' ),
-		),
-	);
-
-	if ( ! isset( $columns[ $location ] ) ) {
-		return;
-	}
-
-	echo '<ul class="rh-footer__menu">';
-
-	foreach ( $columns[ $location ] as $url => $label ) {
-		printf( '<li><a href="%s">%s</a></li>', esc_url( $url ), esc_html( $label ) );
-	}
-
-	echo '</ul>';
-}
-
-/**
- * Render a comparison table tick or dash.
- *
- * @param string $state 'yes' or 'no'.
+ * @param string $state 'yes', 'partial' or 'no'.
  */
 function ressa_compare_mark( $state ) {
-	$yes = ( 'yes' === $state );
+	$states = array(
+		'yes'     => array( 'check', __( 'Included', 'ressa-health' ) ),
+		'partial' => array( '', __( 'Sometimes, or only in part', 'ressa-health' ) ),
+		'no'      => array( 'close', __( 'Not included', 'ressa-health' ) ),
+	);
+
+	if ( ! isset( $states[ $state ] ) ) {
+		$state = 'no';
+	}
+
+	list( $glyph, $label ) = $states[ $state ];
 
 	printf(
 		'<span class="rh-compare__mark rh-compare__mark--%s">%s<span class="screen-reader-text">%s</span></span>',
-		$yes ? 'yes' : 'no',
-		$yes
-			? ressa_icon( 'check' ) // phpcs:ignore WordPress.Security.EscapeOutput
-			: '<svg class="rh-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 12h10"/></svg>',
-		$yes ? esc_html__( 'Included', 'ressa-health' ) : esc_html__( 'Not included', 'ressa-health' )
+		esc_attr( $state ),
+		$glyph
+			? ressa_icon( $glyph ) // phpcs:ignore WordPress.Security.EscapeOutput -- trusted inline SVG.
+			: '<span class="rh-compare__tilde" aria-hidden="true">&#8764;</span>',
+		esc_html( $label )
 	);
 }

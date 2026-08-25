@@ -45,8 +45,8 @@ defined( 'ABSPATH' ) || exit;
 
 		<div class="rh-header__actions">
 			<a class="rh-header__icon-btn" href="<?php echo esc_url( ressa_opt( 'header_search_url' ) ); ?>">
-				<?php ressa_the_icon( 'globe' ); ?>
-				<span class="screen-reader-text"><?php esc_html_e( 'Search the site', 'ressa-health' ); ?></span>
+				<?php ressa_the_icon( 'account' ); ?>
+				<span class="screen-reader-text"><?php esc_html_e( 'Your account', 'ressa-health' ); ?></span>
 			</a>
 
 			<?php

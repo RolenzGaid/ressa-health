@@ -3,7 +3,7 @@
 
 .rh-btn {
   --btn-bg: #{$c-yellow-500};
-  --btn-fg: #{$c-ink};
+  --btn-fg: #{$c-white};
   --btn-bd: transparent;
 
   position: relative;
@@ -39,7 +39,7 @@
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: linear-gradient(100deg, transparent 20%, rgba($c-white, 0.5) 50%, transparent 80%);
+    background: linear-gradient(100deg, transparent 20%, rgba($c-white, 0.32) 50%, transparent 80%);
     transform: translateX(-120%);
     transition: transform 0.7s $ease-out-soft;
   }
@@ -70,7 +70,7 @@
 // --------------------------------------------------------------------------
 .rh-btn--primary {
   --btn-bg: #{$c-yellow-500};
-  --btn-fg: #{$c-ink};
+  --btn-fg: #{$c-white};
 
   @include hover { --btn-bg: #{$c-yellow-600}; }
 }
@@ -84,14 +84,14 @@
 
 .rh-btn--ghost {
   --btn-bg: transparent;
-  --btn-fg: #{$c-ink-soft};
-  --btn-bd: #{$c-line};
+  --btn-fg: #{$c-ink};
+  --btn-bd: transparent;
+  padding-inline: 0.5em;
+  box-shadow: none !important;
 
-  @include hover {
-    --btn-bg: #{$c-white};
-    --btn-fg: #{$c-teal-700};
-    --btn-bd: #{$c-teal-500};
-  }
+  &::after { display: none; }
+
+  @include hover { --btn-fg: #{$c-teal-500}; }
 }
 
 .rh-btn--ghost-light {

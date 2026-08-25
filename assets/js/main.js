@@ -344,6 +344,7 @@
 		var sticky = $('.rh-steps__sticky', scroller);
 		var panels = $$('[data-step-panel]', scroller);
 		var rails = $$('[data-step-index]', scroller);
+		var links = $$('[data-step-link]', scroller);
 
 		if (!sticky || !panels.length) {
 			return;
@@ -367,10 +368,12 @@
 				});
 			}
 
-			// Only the current pill carries the sweep; the rest read as done or
-			// still to come from their colour.
-			rails.forEach(function (rail, i) {
-				rail.style.setProperty('--rail-fill', i === index ? fill.toFixed(3) : '0');
+			// The connector to the right of the current pill grows with that
+			// step's own progress; connectors behind it are already complete.
+			links.forEach(function (link, i) {
+				var value = i < index ? 1 : i === index ? fill : 0;
+
+				link.style.setProperty('--link-fill', value.toFixed(3));
 			});
 		}
 

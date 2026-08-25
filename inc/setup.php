@@ -42,11 +42,7 @@ function ressa_setup() {
 
 	register_nav_menus(
 		array(
-			'primary'     => __( 'Primary Navigation', 'ressa-health' ),
-			'footer_one'  => __( 'Footer — Column One', 'ressa-health' ),
-			'footer_two'  => __( 'Footer — Column Two', 'ressa-health' ),
-			'footer_three' => __( 'Footer — Column Three', 'ressa-health' ),
-			'legal'       => __( 'Footer — Legal', 'ressa-health' ),
+			'primary' => __( 'Primary Navigation', 'ressa-health' ),
 		)
 	);
 
