@@ -14,7 +14,7 @@ if ( ! $ressa_rows ) {
 }
 ?>
 <?php ressa_section_open( 'compare', array( 'labelledby' => 'compare-title' ) ); ?>
-	<div class="rh-container rh-compare__inner">
+	<div class="rh-container">
 		<div class="rh-compare__grid">
 
 			<div class="rh-compare__copy" data-rh-reveal="left" data-rh-stagger>

@@ -7,33 +7,34 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$ressa_screen_id = (int) get_theme_mod( 'app_screen', 0 );
+$ressa_screen_id  = (int) get_theme_mod( 'app_screen', 0 );
+$ressa_screen_url = $ressa_screen_id
+	? wp_get_attachment_image_url( $ressa_screen_id, 'large' )
+	: RESSA_URI . '/assets/img/phone-output.png';
 ?>
 <?php ressa_section_open( 'app', array( 'labelledby' => 'app-title' ) ); ?>
 	<div class="rh-container">
 		<div class="rh-split rh-split--media-narrow">
 
 			<div class="rh-app__visual" data-rh-reveal="zoom" data-rh-parallax data-parallax-strength="0.04">
-				<div class="rh-phone">
-					<div class="rh-phone__screen">
-						<?php if ( $ressa_screen_id ) : ?>
-							<?php
-							echo wp_get_attachment_image(
-								$ressa_screen_id,
-								'large',
-								false,
-								array(
-									'loading' => 'lazy',
-									'alt'     => esc_attr__( 'The Ressa Health app', 'ressa-health' ),
-								)
-							);
-							?>
-						<?php else : ?>
+				<?php if ( $ressa_screen_url ) : ?>
+					<img
+						class="rh-app__shot"
+						src="<?php echo esc_url( $ressa_screen_url ); ?>"
+						alt="<?php esc_attr_e( 'The Ressa Health app showing a glucose trend over six months', 'ressa-health' ); ?>"
+						width="412"
+						height="620"
+						loading="lazy"
+						decoding="async"
+					>
+				<?php else : ?>
+					<div class="rh-phone">
+						<div class="rh-phone__screen">
 							<?php get_template_part( 'template-parts/content/phone-demo' ); ?>
-						<?php endif; ?>
+						</div>
+						<span class="rh-phone__glare" aria-hidden="true"></span>
 					</div>
-					<span class="rh-phone__glare" aria-hidden="true"></span>
-				</div>
+				<?php endif; ?>
 			</div>
 
 			<div class="rh-app__copy" data-rh-reveal="right" data-rh-stagger>

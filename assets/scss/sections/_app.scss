@@ -18,6 +18,13 @@
   justify-content: center;
 }
 
+.rh-app__shot {
+  width: min(100%, 412px);
+  height: auto;
+
+  @include motion-safe { animation: rh-float 8s $ease-in-out-soft infinite; }
+}
+
 // --------------------------------------------------------------------------
 // Phone frame
 // --------------------------------------------------------------------------

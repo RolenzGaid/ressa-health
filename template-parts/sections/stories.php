@@ -14,7 +14,7 @@ if ( ! $ressa_stories ) {
 }
 ?>
 <?php ressa_section_open( 'stories', array( 'labelledby' => 'stories-title' ) ); ?>
-	<div class="rh-container">
+	<div class="rh-container rh-stories__inner">
 		<div class="rh-stories__grid">
 
 			<div class="rh-stories__copy" data-rh-reveal="left" data-rh-stagger>
@@ -25,7 +25,7 @@ if ( ! $ressa_stories ) {
 				</h2>
 			</div>
 
-			<div class="rh-slider" data-rh-slider data-slides-lg="3" data-slides-md="2" data-slides-sm="1" data-rh-reveal="right">
+			<div class="rh-slider" data-rh-slider data-slides-lg="4.3" data-slides-md="2.2" data-slides-sm="1.15" data-rh-reveal="right">
 
 				<div class="rh-slider__viewport" data-slider-viewport>
 					<div class="rh-slider__track" data-slider-track>

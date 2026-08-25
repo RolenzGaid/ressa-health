@@ -342,6 +342,7 @@
 		}
 
 		var sticky = $('.rh-steps__sticky', scroller);
+		var intro = $('[data-step-intro]', scroller);
 		var panels = $$('[data-step-panel]', scroller);
 		var rails = $$('[data-step-index]', scroller);
 		var links = $$('[data-step-link]', scroller);
@@ -350,28 +351,45 @@
 			return;
 		}
 
+		// Stage 0 is the section intro; stage n is step n - 1.
+		var stages = panels.length + (intro ? 1 : 0);
+		var offset = intro ? 1 : 0;
 		var current = -1;
 
-		function setIndex(index, fill) {
-			if (index !== current) {
-				current = index;
+		function setStage(stage, fill) {
+			var step = stage - offset;
+
+			if (stage !== current) {
+				current = stage;
+
+				if (intro) {
+					intro.classList.toggle('is-current', stage === 0);
+					intro.classList.toggle('is-past', stage > 0);
+				}
+
+				sticky.classList.toggle('is-intro', stage === 0);
 
 				panels.forEach(function (panel, i) {
-					panel.classList.toggle('is-current', i === index);
-					panel.classList.toggle('is-past', i < index);
+					panel.classList.toggle('is-current', i === step);
+					panel.classList.toggle('is-past', i < step);
 				});
 
+				// A tablist must always expose exactly one selected tab, so
+				// during the intro the first one holds that role even though
+				// the rail is not on screen yet.
+				var selected = Math.max(0, step);
+
 				rails.forEach(function (rail, i) {
-					rail.setAttribute('aria-selected', i === index ? 'true' : 'false');
-					rail.setAttribute('tabindex', i === index ? '0' : '-1');
-					rail.classList.toggle('is-done', i < index);
+					rail.setAttribute('aria-selected', i === selected ? 'true' : 'false');
+					rail.setAttribute('tabindex', i === selected ? '0' : '-1');
+					rail.classList.toggle('is-done', i < step);
 				});
 			}
 
 			// The connector to the right of the current pill grows with that
 			// step's own progress; connectors behind it are already complete.
 			links.forEach(function (link, i) {
-				var value = i < index ? 1 : i === index ? fill : 0;
+				var value = i < step ? 1 : i === step ? fill : 0;
 
 				link.style.setProperty('--link-fill', value.toFixed(3));
 			});
@@ -384,9 +402,16 @@
 
 		function update() {
 			if (!isPinned()) {
-				// Stacked layout: every step is visible, so the rail is a plain
-				// jump list rather than a progress indicator.
-				setIndex(0, 0);
+				// Stacked layout: the intro and every step are all visible, so
+				// the rail is a plain jump list rather than a progress bar.
+				setStage(offset, 0);
+				sticky.classList.remove('is-intro');
+
+				if (intro) {
+					intro.classList.add('is-current');
+					intro.classList.remove('is-past');
+				}
+
 				panels.forEach(function (panel) {
 					panel.classList.add('is-current');
 					panel.classList.remove('is-past');
@@ -403,10 +428,10 @@
 			var stickyTop = parseFloat(window.getComputedStyle(sticky).top) || 0;
 			var scrolled = clamp(stickyTop - scroller.getBoundingClientRect().top, 0, total);
 			var progress = scrolled / total;
-			var raw = progress * panels.length;
-			var index = clamp(Math.floor(raw), 0, panels.length - 1);
+			var raw = progress * stages;
+			var stage = clamp(Math.floor(raw), 0, stages - 1);
 
-			setIndex(index, clamp(raw - index, 0, 1));
+			setStage(stage, clamp(raw - stage, 0, 1));
 		}
 
 		onScroll(update);
@@ -428,7 +453,7 @@
 				var target =
 					scroller.getBoundingClientRect().top +
 					window.pageYOffset +
-					(total * (index + 0.5)) / panels.length;
+					(total * (index + offset + 0.5)) / stages;
 
 				window.scrollTo({
 					top: target,
@@ -459,18 +484,20 @@
 			var maxIndex = 0;
 			var dots = [];
 
+			/// Fractional values are allowed so the track can show a partial
+			/// slide at the edge, which is how the design signals "more".
 			function slidesPerView() {
 				var width = window.innerWidth;
 
 				if (width >= 992) {
-					return parseInt(slider.dataset.slidesLg, 10) || 3;
+					return parseFloat(slider.dataset.slidesLg) || 3;
 				}
 
 				if (width >= 640) {
-					return parseInt(slider.dataset.slidesMd, 10) || 2;
+					return parseFloat(slider.dataset.slidesMd) || 2;
 				}
 
-				return parseInt(slider.dataset.slidesSm, 10) || 1;
+				return parseFloat(slider.dataset.slidesSm) || 1;
 			}
 
 			function gapSize() {
@@ -504,9 +531,23 @@
 				};
 			}
 
+			/// Distance from one slide's left edge to the next.
+			function slideStep() {
+				return slides[0].getBoundingClientRect().width + gapSize();
+			}
+
+			/// How far the track can travel before its right edge meets the
+			/// right edge of the viewport. Paging is clamped to this so the
+			/// last page never over-scrolls into empty space.
+			function maxOffset() {
+				var gap = gapSize();
+				var total = slides.length * slides[0].getBoundingClientRect().width + (slides.length - 1) * gap;
+
+				return Math.max(0, total - track.clientWidth);
+			}
+
 			function layout() {
 				perView = slidesPerView();
-				maxIndex = Math.max(0, slides.length - perView);
 
 				var gap = gapSize();
 
@@ -515,6 +556,8 @@
 					'calc((100% - ' + (perView - 1) * gap + 'px) / ' + perView + ')'
 				);
 
+				maxIndex = Math.ceil(maxOffset() / slideStep());
+
 				buildDots();
 				goTo(Math.min(index, maxIndex), true);
 			}
@@ -522,13 +565,14 @@
 			function goTo(target, immediate) {
 				index = clamp(target, 0, maxIndex);
 
-				var slideWidth = slides[0].getBoundingClientRect().width + gapSize();
+				var step = slideStep();
+				var offset = Math.min(index * step, maxOffset());
 
 				if (immediate) {
 					track.style.transition = 'none';
 				}
 
-				track.style.transform = 'translate3d(' + -index * slideWidth + 'px, 0, 0)';
+				track.style.transform = 'translate3d(' + -offset + 'px, 0, 0)';
 
 				if (immediate) {
 					void track.offsetWidth;
@@ -548,8 +592,11 @@
 				});
 
 				// Slides scrolled out of view must not be reachable by keyboard.
+				var slideWidth = slides[0].getBoundingClientRect().width;
+
 				slides.forEach(function (slide, i) {
-					var visible = i >= index && i < index + perView;
+					var left = i * step;
+					var visible = left >= offset - 1 && left + slideWidth <= offset + track.clientWidth + 1;
 
 					slide.setAttribute('aria-hidden', visible ? 'false' : 'true');
 					$$('a, button, video', slide).forEach(function (node) {

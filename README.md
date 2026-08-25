@@ -59,6 +59,7 @@ Each repeating group is a custom post type with its own fields. Drag the **Order
 |---|---|---|
 | Data Layers | The “We read seven” tabs and wheel | Order = order around the wheel. Featured image fills the wheel slice; the accent colour is used until one is set. |
 | Process Steps | Test → Analyze → Act | The short *rail label* is the pill text; the *step label* is the “Step 01” line. |
+| — | — | Each step's featured image fills the media frame above its copy. |
 | Platform Features | The six-card grid | Featured image is the card visual. |
 | Member Stories | The story carousel | Choose **Video** or **Pull quote** per slide. Video slides play muted on hover. |
 | Team Members | The medical team row | Featured image is the portrait. |
@@ -81,14 +82,18 @@ support (arrow keys, Home/End) and correct `role="tablist"` semantics. Clicking 
 wheel itself also selects that layer.
 
 **Test → Analyze → Act.** The “Works with the data you already have” band pins to the viewport and
-advances one step at a time as the page scrolls, forwards and backwards. The rail doubles as a
-progress bar and as a jump control. Below 992px — and whenever reduced motion is requested — the
-pin is dropped and the three steps simply stack.
+plays as a four-stage sequence: the section's own heading holds the first screenful, then Test,
+Analyze and Act each take a turn as the page scrolls — forwards and backwards. The connector
+between two pills fills with the scroll progress of the step on its left, and reaching the far side
+is what promotes the next pill. Below 992px — and whenever reduced motion is requested — the pin is
+dropped and the intro and all three steps simply stack.
 
 **Story carousel.** A dependency-free slider with pointer dragging, keyboard arrows, dots and
-disabled-state arrows. Video slides start muted and play on hover or keyboard focus, and pause on
-leave; the play button toggles them on touch devices. Off-screen slides are removed from the tab
-order.
+disabled-state arrows. The track keeps the container's left gutter and runs on past the right edge
+of the page, showing part of the next card; paging is clamped so the last page lands flush rather
+than over-scrolling into empty space. Video slides start muted and play on hover or keyboard focus,
+and pause on leave; the play button toggles them on touch devices. Off-screen slides are removed
+from the tab order.
 
 ## Motion
 
@@ -152,13 +157,16 @@ inc/template-tags.php       section heads, buttons, pills, brand lockup
 Adding an editable field anywhere means adding one array entry to `inc/fields.php`; the meta box,
 the sanitiser and the Customizer control are all generated from it.
 
-## Placeholders shipped with the theme
+## Artwork shipped with the theme
 
-The design comp uses photography and final iconography that is not part of this handover, so the
-theme ships neutral stand-ins that are meant to be replaced:
+`assets/img/` holds the supplied photography, used as the starting state for the clinician row, the
+story carousel posters and The Output. Setting a featured image (or the Customizer's phone
+screenshot) overrides the bundled file — nothing needs to be deleted first.
 
-* Flat colour media frames for feature, step, story and team images — these match the comp, and
-  become real images as soon as a featured image is set.
+The rest are neutral stand-ins meant to be replaced:
+
+* Flat colour media frames for feature and step images — these match the comp, and become real
+  images as soon as a featured image is set.
 * A line-icon set in `inc/svg.php` (`ressa_icon_paths()`), used for the orbit diagram, feature
   frames and UI affordances.
 * A generated brand mark in `ressa_brand_mark()`.

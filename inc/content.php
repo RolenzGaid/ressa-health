@@ -183,6 +183,23 @@ function ressa_item_tags( $item, $key = 'tags' ) {
 }
 
 /**
+ * URL of the artwork bundled with the theme for an item, if any.
+ *
+ * Used when nothing has been uploaded in WordPress yet, so a fresh install
+ * shows the supplied photography rather than an empty colour block.
+ *
+ * @param array $item Item array.
+ * @return string
+ */
+function ressa_item_default_image( $item ) {
+	if ( empty( $item['default_image'] ) ) {
+		return '';
+	}
+
+	return RESSA_URI . '/' . ltrim( $item['default_image'], '/' );
+}
+
+/**
  * Render a media frame for an item, or the flat colour placeholder used in the
  * design comp when no image has been attached yet.
  *
@@ -206,8 +223,13 @@ function ressa_media_frame( $item, $args = array() ) {
 	);
 
 	$image_id = isset( $item['image_id'] ) ? (int) $item['image_id'] : 0;
+	$bundled  = ressa_item_default_image( $item );
 
-	printf( '<div class="rh-media %s">', esc_attr( $args['classes'] ) );
+	printf(
+		'<div class="rh-media %s%s">',
+		esc_attr( $args['classes'] ),
+		( $image_id || $bundled ) ? ' has-image' : ''
+	);
 
 	if ( $image_id ) {
 		echo wp_get_attachment_image(
@@ -219,6 +241,13 @@ function ressa_media_frame( $item, $args = array() ) {
 				'decoding' => 'async',
 				'alt'      => esc_attr( ressa_item( $item, 'title' ) ),
 			)
+		);
+	} elseif ( $bundled ) {
+		printf(
+			'<img src="%s" alt="%s" loading="%s" decoding="async">',
+			esc_url( $bundled ),
+			esc_attr( ressa_item( $item, 'title' ) ),
+			esc_attr( $args['lazy'] ? 'lazy' : 'eager' )
 		);
 	} else {
 		echo '<span class="rh-media__placeholder" aria-hidden="true">' . ressa_icon( $args['icon'] ) . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput -- trusted inline SVG.

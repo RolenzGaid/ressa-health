@@ -6,23 +6,12 @@
   overflow: hidden;
 }
 
-/// The table runs past the right-hand edge of the standard container, as in
-/// the design: the copy keeps the container's left gutter, the table does not.
-.rh-compare__inner {
-  @include up('lg') {
-    max-width: none;
-    margin-inline: 0;
-    padding-left: max(#{$gutter}, calc((100vw - #{$container}) / 2));
-    padding-right: clamp(1.25rem, 3.4vw, 3rem);
-  }
-}
-
 .rh-compare__grid {
   display: grid;
   gap: clamp(2rem, 1rem + 3.5vw, 4rem);
   align-items: center;
 
-  @include up('lg') { grid-template-columns: minmax(0, 0.62fr) minmax(0, 1.38fr); }
+  @include up('lg') { grid-template-columns: minmax(0, 0.66fr) minmax(0, 1.34fr); }
 }
 
 .rh-compare__copy {

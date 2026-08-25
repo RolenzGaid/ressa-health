@@ -3,7 +3,20 @@
 
 .rh-stories {
   background: $c-surface;
-  overflow: hidden;
+  /// `clip` so the carousel can run off the right edge without the section
+  /// becoming a scroll container.
+  overflow-x: clip;
+}
+
+/// The heading keeps the container's left gutter; the carousel runs on past
+/// the right-hand edge of the page, as in the design.
+.rh-stories__inner {
+  @include up('lg') {
+    max-width: none;
+    margin-inline: 0;
+    padding-left: max(#{$gutter}, calc((100vw - #{$container}) / 2));
+    padding-right: 0;
+  }
 }
 
 .rh-stories__grid {
@@ -11,7 +24,7 @@
   gap: clamp(1.75rem, 1rem + 3vw, 3rem);
   align-items: center;
 
-  @include up('lg') { grid-template-columns: minmax(0, 0.62fr) minmax(0, 1.38fr); }
+  @include up('lg') { grid-template-columns: minmax(0, 0.46fr) minmax(0, 1.54fr); }
 }
 
 .rh-stories__copy {
@@ -30,6 +43,13 @@
   /// Lets focus rings and the lifted card shadow breathe without clipping.
   margin: -12px;
   padding: 12px;
+
+  /// On the bleeding layout the right gutter would overhang the page, so it
+  /// is dropped and the track clips flush to the edge instead.
+  @include up('lg') {
+    margin-right: 0;
+    padding-right: 0;
+  }
 }
 
 .rh-slider__track {
@@ -54,7 +74,7 @@
   min-width: 0;
   /// Every slide shares one portrait frame so the row stays even whichever
   /// mix of video and quote cards an editor publishes.
-  aspect-ratio: var(--slide-ratio, 3 / 4.3);
+  aspect-ratio: var(--slide-ratio, 366 / 428);
 }
 
 // --------------------------------------------------------------------------
@@ -194,7 +214,7 @@
 
 .rh-story__quote {
   margin: 0;
-  font-size: clamp(0.76rem, 0.7rem + 0.22vw, 0.85rem);
+  font-size: clamp(0.74rem, 0.69rem + 0.18vw, 0.8rem);
   line-height: 1.66;
   font-weight: 500;
 }
@@ -216,6 +236,8 @@
   align-items: center;
   gap: 0.6rem;
   margin-top: 1.5rem;
+
+  @include up('lg') { padding-right: clamp(1.5rem, 5vw, 5rem); }
 }
 
 .rh-slider__btn {

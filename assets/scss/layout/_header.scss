@@ -12,14 +12,21 @@
   /// height stays exactly $header-h — anything else and the full-height hero
   /// and the pinned step panel are both off by a pixel.
   box-shadow: none;
+  /// Sits with a little air at the top of the page and tightens up once it
+  /// starts overlapping content.
+  padding-block: $header-pad-sm;
   transition: background-color $dur-base $ease-out-soft,
-              box-shadow       $dur-base $ease-out-soft;
+              box-shadow       $dur-base $ease-out-soft,
+              padding-block    $dur-base $ease-out-soft;
+
+  @include up('lg') { padding-block: $header-pad; }
 }
 
 /// Set by main.js once the page has scrolled past the hero threshold.
 .rh-header.is-stuck {
   background: rgba($c-surface, 0.97);
   box-shadow: inset 0 -1px 0 $c-line-soft, #{$shadow-sm};
+  padding-block: 0;
 }
 
 .rh-header__inner {
@@ -42,14 +49,14 @@
   flex: none;
   color: $c-teal-800;
 
-  img { max-height: 46px; width: auto; }
+  img { max-height: 44px; width: auto; }
 
   @include hover { color: $c-teal-600; }
 }
 
 .rh-brand__mark {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   flex: none;
   transition: transform $dur-base $ease-spring;
 
@@ -60,10 +67,31 @@
   display: flex;
   flex-direction: column;
   font-family: $font-serif;
-  font-size: 1.16rem;
+  font-size: 1.05rem;
   font-weight: 600;
-  line-height: 1.04;
+  line-height: 1.05;
   letter-spacing: -0.01em;
+}
+
+/// An uploaded logo comes through WordPress's own markup, which sits outside
+/// .rh-brand — without a ceiling here it renders at its intrinsic size.
+.custom-logo-link {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  line-height: 0;
+
+  img {
+    width: auto;
+    height: auto;
+    max-height: 38px;
+    max-width: 190px;
+    object-fit: contain;
+  }
+
+  @include up('lg') {
+    img { max-height: 48px; max-width: 220px; }
+  }
 }
 
 // --------------------------------------------------------------------------

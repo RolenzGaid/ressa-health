@@ -76,10 +76,6 @@ function ressa_post_types() {
 					'label' => __( 'Description', 'ressa-health' ),
 					'type'  => 'textarea',
 				),
-				'tags'        => array(
-					'label' => __( 'Pills above the image', 'ressa-health' ),
-					'type'  => 'tags',
-				),
 			),
 			'image_label' => __( 'Step image', 'ressa-health' ),
 		),

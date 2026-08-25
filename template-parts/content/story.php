@@ -26,10 +26,7 @@ if ( 'quote' === $ressa_format ) :
 			<?php echo wp_kses( ressa_item( $ressa_story, 'quote' ), ressa_allowed_inline_html() ); ?>
 		</blockquote>
 		<figcaption class="rh-story__attrib">
-			<?php echo esc_html( $ressa_name ); ?>
-			<?php if ( $ressa_meta ) : ?>
-				<span> &middot; <?php echo esc_html( wp_strip_all_tags( $ressa_meta ) ); ?></span>
-			<?php endif; ?>
+			&mdash; <?php echo esc_html( $ressa_name ); ?>
 		</figcaption>
 	</figure>
 	<?php
@@ -48,6 +45,12 @@ endif;
 					'loading' => 'lazy',
 					'alt'     => esc_attr( $ressa_name ),
 				)
+			);
+		} elseif ( ressa_item_default_image( $ressa_story ) ) {
+			printf(
+				'<img src="%s" alt="%s" loading="lazy" decoding="async">',
+				esc_url( ressa_item_default_image( $ressa_story ) ),
+				esc_attr( $ressa_name )
 			);
 		}
 		?>

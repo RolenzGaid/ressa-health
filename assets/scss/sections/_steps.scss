@@ -9,8 +9,6 @@
   overflow-x: clip;
 }
 
-.rh-steps__head { margin-bottom: clamp(2rem, 1.2rem + 2.6vw, 3.25rem); }
-
 // --------------------------------------------------------------------------
 // Pinned scroller
 // --------------------------------------------------------------------------
@@ -27,7 +25,7 @@
 
 @include up('lg') {
   .rh-steps__scroller {
-    height: calc((var(--step-count, 3) - 1) * 92vh + 100vh);
+    height: calc((var(--stage-count, 4) - 1) * 82vh + 100vh);
   }
 
   .rh-steps__sticky {
@@ -45,8 +43,17 @@
 // --------------------------------------------------------------------------
 // Test / Analyze / Act rail
 // --------------------------------------------------------------------------
+/// Hidden while the intro holds the screen, so the first stage is nothing but
+/// the section's own heading.
+.rh-steps__sticky.is-intro .rh-steps__rail {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .rh-steps__rail {
   display: flex;
+  opacity: 1;
+  transition: opacity $dur-base $ease-out-soft;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
@@ -118,6 +125,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  /// Stages share one grid cell sized to the tallest of them, so each one
+  /// centres itself rather than hanging from the top of that box.
+  justify-content: center;
   text-align: center;
   opacity: 0;
   visibility: hidden;
@@ -142,9 +152,9 @@
   transform: translate3d(0, calc(-34px * var(--rh-motion)), 0);
 }
 
-.rh-step__tags {
-  justify-content: center;
-  margin-bottom: 1.15rem;
+/// The intro stage: eyebrow, headline and lede, centred like a section head.
+.rh-steps__intro {
+  .rh-section-head { margin-bottom: 0; }
 }
 
 .rh-step__media {
@@ -186,8 +196,6 @@
   /// bottom of the viewport, so the vertical rhythm and the media both scale
   /// with the viewport height rather than the width alone.
   .rh-steps__rail { margin-bottom: clamp(1rem, 2.6vh, 2.4rem); }
-
-  .rh-step__tags { margin-bottom: clamp(0.7rem, 1.5vh, 1.15rem); }
 
   .rh-step__media { width: min(100%, 560px, calc((100vh - 28rem) * 16 / 9)); }
 

@@ -197,21 +197,18 @@ function ressa_default_items( $type ) {
 				'rail_label'  => 'Test',
 				'step_label'  => 'Step 01',
 				'description' => 'Connect results you already have from Quest, Labcorp or your patient portal &mdash; or order a fresh panel through the Ressa partner network.',
-				'tags'        => array( 'Upload a PDF', 'Sync a portal', 'Order a panel' ),
 			),
 			array(
 				'title'       => 'See what your body is saying',
 				'rail_label'  => 'Analyze',
 				'step_label'  => 'Step 02',
 				'description' => 'Our engine reads across all seven layers at once and surfaces the connection that no single panel, device or visit could show on its own.',
-				'tags'        => array( 'Seven layers', 'Cross-referenced', 'In context' ),
 			),
 			array(
 				'title'       => 'You get the Story of You',
 				'rail_label'  => 'Act',
 				'step_label'  => 'Step 03',
 				'description' => 'One narrative picture of your health &mdash; the thread running through everything, written in plain language you can act on and share.',
-				'tags'        => array( 'Plain language', 'What changed', 'What&rsquo;s next' ),
 			),
 		),
 
@@ -244,9 +241,10 @@ function ressa_default_items( $type ) {
 
 		'rh_story' => array(
 			array(
-				'title'  => 'Maya R.',
-				'format' => 'video',
-				'meta'   => 'Hashimoto&rsquo;s, found at 31',
+				'title'         => 'Maya R.',
+				'format'        => 'video',
+				'meta'          => 'Hashimoto&rsquo;s, found at 31',
+				'default_image' => 'assets/img/stories-video-1.png',
 			),
 			array(
 				'title'  => 'Daniel K.',
@@ -255,9 +253,10 @@ function ressa_default_items( $type ) {
 				'meta'   => 'Member since 2024',
 			),
 			array(
-				'title'  => 'Priya S.',
-				'format' => 'video',
-				'meta'   => 'Insulin resistance, caught early',
+				'title'         => 'Priya S.',
+				'format'        => 'video',
+				'meta'          => 'Insulin resistance, caught early',
+				'default_image' => 'assets/img/stories-video-2.png',
 			),
 			array(
 				'title'  => 'Elena M.',
@@ -266,28 +265,33 @@ function ressa_default_items( $type ) {
 				'meta'   => 'Member since 2023',
 			),
 			array(
-				'title'  => 'James T.',
-				'format' => 'video',
-				'meta'   => 'Chronic fatigue, finally explained',
+				'title'         => 'James T.',
+				'format'        => 'video',
+				'meta'          => 'Chronic fatigue, finally explained',
+				'default_image' => 'assets/img/stories-video-1.png',
 			),
 		),
 
 		'rh_member' => array(
 			array(
-				'title' => 'Dr. Lorem Ipsum',
-				'role'  => 'Clinical Lead, MD',
+				'title'         => 'Dr. Lorem Ipsum',
+				'role'          => 'Clinical Lead, MD',
+				'default_image' => 'assets/img/doctor-lorem-ipsum-1.png',
 			),
 			array(
-				'title' => 'Dr. Lorem Ipsum',
-				'role'  => 'Functional Medicine',
+				'title'         => 'Dr. Lorem Ipsum',
+				'role'          => 'Functional Medicine',
+				'default_image' => 'assets/img/doctor-lorem-ipsum-2.png',
 			),
 			array(
-				'title' => 'Dr. Lorem Ipsum',
-				'role'  => 'Data Science',
+				'title'         => 'Dr. Lorem Ipsum',
+				'role'          => 'Data Science',
+				'default_image' => 'assets/img/doctor-lorem-ipsum-3.png',
 			),
 			array(
-				'title' => 'Dr. Lorem Ipsum',
-				'role'  => 'Cross-Disciplinary Review',
+				'title'         => 'Dr. Lorem Ipsum',
+				'role'          => 'Cross-Disciplinary Review',
+				'default_image' => 'assets/img/doctor-lorem-ipsum-4.png',
 			),
 		),
 

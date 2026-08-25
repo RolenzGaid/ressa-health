@@ -15,12 +15,12 @@
   /// The masthead and the hero together make one screenful, so the fold lands
   /// exactly on the hero's bottom edge. `min-height` (not `height`) so the
   /// section still grows if the copy ever outgrows a short viewport.
-  min-height: calc(100vh - #{$header-h-sm});
-  min-height: calc(100svh - #{$header-h-sm});
+  min-height: calc(100vh - #{$header-h-sm} - #{$header-pad-sm * 2});
+  min-height: calc(100svh - #{$header-h-sm} - #{$header-pad-sm * 2});
 
   @include up('lg') {
-    min-height: calc(100vh - #{$header-h});
-    min-height: calc(100svh - #{$header-h});
+    min-height: calc(100vh - #{$header-h} - #{$header-pad * 2});
+    min-height: calc(100svh - #{$header-h} - #{$header-pad * 2});
   }
 }
 

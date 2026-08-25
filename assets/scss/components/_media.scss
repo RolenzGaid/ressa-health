@@ -34,6 +34,10 @@
 
 .rh-media--round { --media-radius: #{$radius-lg}; }
 
+/// Supplied artwork carries its own rounded corners, so the placeholder tint
+/// must not show through them.
+.rh-media.has-image { background: transparent; }
+
 /// Slow zoom on hover, applied by any parent carrying `.rh-media-zoom`.
 .rh-media-zoom {
   @include hover {
