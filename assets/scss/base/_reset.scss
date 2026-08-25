@@ -25,8 +25,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /// Belt-and-braces guard against horizontal overflow from decorative
-  /// elements that intentionally sit outside their container.
-  overflow-x: hidden;
+  /// elements that intentionally sit outside their container. `clip` rather
+  /// than `hidden` so the body never becomes a scroll container and break
+  /// `position: sticky` on the header and the pinned step sequence.
+  overflow-x: clip;
 }
 
 h1, h2, h3, h4, h5, h6 { margin: 0 0 0.6em; font-weight: 500; }

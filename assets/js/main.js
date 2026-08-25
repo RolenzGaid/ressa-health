@@ -363,13 +363,14 @@
 				rails.forEach(function (rail, i) {
 					rail.setAttribute('aria-selected', i === index ? 'true' : 'false');
 					rail.setAttribute('tabindex', i === index ? '0' : '-1');
+					rail.classList.toggle('is-done', i < index);
 				});
 			}
 
+			// Only the current pill carries the sweep; the rest read as done or
+			// still to come from their colour.
 			rails.forEach(function (rail, i) {
-				var value = i < index ? 1 : i === index ? fill : 0;
-
-				rail.style.setProperty('--rail-fill', value.toFixed(3));
+				rail.style.setProperty('--rail-fill', i === index ? fill.toFixed(3) : '0');
 			});
 		}
 

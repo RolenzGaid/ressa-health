@@ -3,7 +3,10 @@
 
 .rh-steps {
   background: $c-white;
-  overflow: hidden;
+  /// `clip`, never `hidden`: `hidden` would make this section a scroll
+  /// container, which silently stops `position: sticky` working on the pinned
+  /// panel inside it. `clip` crops the same way without that side effect.
+  overflow-x: clip;
 }
 
 .rh-steps__head { margin-bottom: clamp(2rem, 1.2rem + 2.6vw, 3.25rem); }
@@ -36,6 +39,7 @@
     min-height: calc(100vh - #{$header-h} - 40px);
     padding-block: 1.5rem;
   }
+
 }
 
 // --------------------------------------------------------------------------
@@ -47,6 +51,7 @@
   justify-content: center;
   gap: 0.55rem;
   margin: 0 0 clamp(1.5rem, 1rem + 1.6vw, 2.4rem);
+  flex: none;
 }
 
 .rh-steps__rail-btn {
@@ -68,25 +73,36 @@
   isolation: isolate;
   transition: color $dur-base $ease-out-soft, border-color $dur-base $ease-out-soft;
 
-  /// A yellow bar sweeps left-to-right in time with the scroll progress of
-  /// the current step, so the rail doubles as a progress indicator.
+  /// A soft bar sweeps left-to-right in time with the scroll progress of the
+  /// current step, so the rail doubles as a progress indicator. It only shows
+  /// on the current pill — elsewhere the state is carried by colour alone.
   &::before {
     content: '';
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: rgba($c-yellow-500, 0.9);
+    background: rgba($c-white, 0.22);
+    opacity: 0;
     transform: scaleX(var(--rail-fill, 0));
     transform-origin: left center;
-    transition: transform 0.25s linear;
+    transition: transform 0.25s linear, opacity $dur-fast $ease-out-soft;
   }
 
   @include hover { color: $c-ink; border-color: $c-teal-400; }
+
+  /// Steps already passed: quietly complete, never louder than the current one.
+  &.is-done {
+    background: $c-mint-300;
+    border-color: transparent;
+    color: $c-teal-800;
+  }
 
   &[aria-selected='true'] {
     background: $c-teal-700;
     color: $c-white;
     border-color: $c-teal-700;
+
+    &::before { opacity: 1; }
   }
 }
 
@@ -169,6 +185,19 @@
   line-height: 1.72;
   color: $c-muted;
   margin: 0;
+}
+
+@include up('lg') {
+  /// While pinned, the whole step has to fit between the masthead and the
+  /// bottom of the viewport, so the vertical rhythm and the media both scale
+  /// with the viewport height rather than the width alone.
+  .rh-steps__rail { margin-bottom: clamp(1rem, 2.6vh, 2.4rem); }
+
+  .rh-step__tags { margin-bottom: clamp(0.7rem, 1.5vh, 1.15rem); }
+
+  .rh-step__media { width: min(100%, 560px, calc((100vh - 28rem) * 16 / 9)); }
+
+  .rh-step__body { margin-top: clamp(0.9rem, 1.9vh, 1.6rem); }
 }
 
 /// Children of the current step ladder in behind it.
