@@ -130,8 +130,15 @@
   stroke-width: 0.9;
 }
 
-/// Filled slice for each layer. Hidden by default, bloomed open when its tab
-/// becomes current.
+/// The over-slice pass: invisible against the empty wheel, and a hairline
+/// separator wherever two photographs meet.
+.rh-wheel__spoke--over {
+  stroke: rgba($c-white, 0.9);
+  stroke-width: 1.6;
+}
+
+/// One filled slice per layer. Slices accumulate as the visitor moves through
+/// the tabs, blooming open from the centre of the wheel.
 .rh-wheel__wedge {
   transform-origin: var(--wheel-cx) var(--wheel-cy);
   transform-box: view-box;

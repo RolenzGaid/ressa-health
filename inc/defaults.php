@@ -142,6 +142,7 @@ function ressa_default_items( $type ) {
 		'rh_layer' => array(
 			array(
 				'title'       => 'Labs',
+				'default_image' => 'assets/img/layer-labs.webp',
 				'eyebrow'     => 'Biomarkers, in context.',
 				'description' => 'Metabolism, inflammation, and hormones &mdash; read alongside everything else your body is telling you, not alone.',
 				'tags'        => array( 'Biomarkers', 'Metabolism', 'Inflammation', 'Hormones' ),
@@ -149,6 +150,7 @@ function ressa_default_items( $type ) {
 			),
 			array(
 				'title'       => 'Genomics',
+				'default_image' => 'assets/img/layer-genomics.webp',
 				'eyebrow'     => 'Your blueprint, decoded.',
 				'description' => 'Inherited risk and drug response, interpreted against what your body is actually doing today &mdash; not against a population average.',
 				'tags'        => array( 'Variants', 'Inherited Risk', 'Pharmacogenomics', 'Traits' ),
@@ -156,6 +158,7 @@ function ressa_default_items( $type ) {
 			),
 			array(
 				'title'       => 'Microbiome',
+				'default_image' => 'assets/img/layer-microbiome.webp',
 				'eyebrow'     => 'The ecosystem within.',
 				'description' => 'Gut diversity and metabolite production, connected to the digestion, mood and immunity you actually feel day to day.',
 				'tags'        => array( 'Diversity', 'Digestion', 'Metabolites', 'Immunity' ),
@@ -163,6 +166,7 @@ function ressa_default_items( $type ) {
 			),
 			array(
 				'title'       => 'Wearables',
+				'default_image' => 'assets/img/layer-wearables.webp',
 				'eyebrow'     => 'Every day in between.',
 				'description' => 'Sleep, recovery and heart rate variability fill in the months of your life that a once-a-year blood draw never sees.',
 				'tags'        => array( 'Sleep', 'HRV', 'Activity', 'Recovery' ),
@@ -170,6 +174,7 @@ function ressa_default_items( $type ) {
 			),
 			array(
 				'title'       => 'Imaging',
+				'default_image' => 'assets/img/layer-imaging.webp',
 				'eyebrow'     => 'Structure and change.',
 				'description' => 'Scans and body composition tracked over time, so a shift shows up in the picture long before it shows up as a symptom.',
 				'tags'        => array( 'Composition', 'Scans', 'Density', 'Change' ),
@@ -177,6 +182,7 @@ function ressa_default_items( $type ) {
 			),
 			array(
 				'title'       => 'Surveys',
+				'default_image' => 'assets/img/layer-surveys.webp',
 				'eyebrow'     => 'What only you can report.',
 				'description' => 'Energy, mood, pain and stress &mdash; the subjective signal that gives every objective number its meaning.',
 				'tags'        => array( 'Symptoms', 'Energy', 'Mood', 'Stress' ),
@@ -184,6 +190,7 @@ function ressa_default_items( $type ) {
 			),
 			array(
 				'title'       => 'Clinical Data',
+				'default_image' => 'assets/img/layer-clinical-data.webp',
 				'eyebrow'     => 'Your history, remembered.',
 				'description' => 'Visits, diagnoses and prescriptions carried forward, so nothing about you ever has to be explained from scratch twice.',
 				'tags'        => array( 'History', 'Diagnoses', 'Medications', 'Visits' ),

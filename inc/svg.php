@@ -161,6 +161,99 @@ function ressa_polar( $cx, $cy, $r, $angle ) {
 }
 
 /**
+ * Path data for one circular sector, apex at the centre.
+ *
+ * @param float $cx    Centre x.
+ * @param float $cy    Centre y.
+ * @param float $r     Radius.
+ * @param float $start Start angle, degrees clockwise from top.
+ * @param float $end   End angle.
+ * @param float $step  Sweep, used to pick the large-arc flag.
+ * @return string
+ */
+function ressa_sector_path( $cx, $cy, $r, $start, $end, $step ) {
+	list( $x1, $y1 ) = ressa_polar( $cx, $cy, $r, $start );
+	list( $x2, $y2 ) = ressa_polar( $cx, $cy, $r, $end );
+
+	return sprintf(
+		'M %s %s L %s %s A %s %s 0 %d 1 %s %s Z',
+		$cx,
+		$cy,
+		$x1,
+		$y1,
+		$r,
+		$r,
+		( $step > 180 ) ? 1 : 0,
+		$x2,
+		$y2
+	);
+}
+
+/**
+ * Photograph used for a layer's slice, if one is available.
+ *
+ * @param array $layer Layer item.
+ * @return string
+ */
+function ressa_layer_slice_image( $layer ) {
+	$image_id = isset( $layer['image_id'] ) ? (int) $layer['image_id'] : 0;
+
+	if ( $image_id ) {
+		$src = wp_get_attachment_image_url( $image_id, 'large' );
+
+		if ( $src ) {
+			return $src;
+		}
+	}
+
+	return ressa_item_default_image( $layer );
+}
+
+/**
+ * Bounding box of a circular sector.
+ *
+ * Used to place each slice's photograph so it fills that slice and nothing
+ * else, rather than being cropped out of one image spanning the whole wheel.
+ *
+ * @param float $cx    Centre x.
+ * @param float $cy    Centre y.
+ * @param float $r     Radius.
+ * @param float $start Start angle, degrees clockwise from top.
+ * @param float $end   End angle.
+ * @return array{0: float, 1: float, 2: float, 3: float} x, y, width, height.
+ */
+function ressa_sector_bounds( $cx, $cy, $r, $start, $end ) {
+	$xs = array( $cx );
+	$ys = array( $cy );
+
+	$angles = array( $start, $end );
+
+	// A sector's extreme points are its arc ends plus any quarter-turn the arc
+	// happens to sweep through.
+	foreach ( array( 0, 90, 180, 270, 360 ) as $cardinal ) {
+		if ( $cardinal >= $start && $cardinal <= $end ) {
+			$angles[] = $cardinal;
+		}
+	}
+
+	foreach ( $angles as $angle ) {
+		list( $x, $y ) = ressa_polar( $cx, $cy, $r, $angle );
+		$xs[] = $x;
+		$ys[] = $y;
+	}
+
+	$min_x = min( $xs );
+	$min_y = min( $ys );
+
+	return array(
+		round( $min_x, 2 ),
+		round( $min_y, 2 ),
+		round( max( 1, max( $xs ) - $min_x ), 2 ),
+		round( max( 1, max( $ys ) - $min_y ), 2 ),
+	);
+}
+
+/**
  * Render the seven-layer wheel.
  *
  * Each layer owns one slice. The slice for the current tab is revealed by CSS
@@ -174,8 +267,9 @@ function ressa_render_wheel( $layers ) {
 
 	$cx      = 285.0;
 	$cy      = 258.0;
-	$r_ring  = 186.0;   // Thin outline circle.
-	$r_wedge = 202.0;   // Filled slice sits slightly proud of the outline.
+	// Slices reach the outline and stop there — never past it.
+	$r_ring  = 186.0;
+	$r_wedge = 186.0;
 	$r_hub   = 50.0;
 	$r_label = 208.0;
 
@@ -187,31 +281,28 @@ function ressa_render_wheel( $layers ) {
 	echo '<defs>';
 
 	foreach ( $layers as $index => $layer ) {
-		$accent   = ressa_item( $layer, 'accent', '#0f5d57' );
-		$image_id = isset( $layer['image_id'] ) ? (int) $layer['image_id'] : 0;
-		$fill_id  = 'rh-slice-' . $index;
+		$start = $index * $step;
+		$end   = $start + $step;
 
-		if ( $image_id ) {
-			$src = wp_get_attachment_image_url( $image_id, 'large' );
+		printf(
+			'<clipPath id="rh-clip-%d"><path d="%s"/></clipPath>',
+			(int) $index,
+			esc_attr( ressa_sector_path( $cx, $cy, $r_wedge, $start, $end, $step ) )
+		);
 
-			printf(
-				'<pattern id="%1$s" patternUnits="objectBoundingBox" width="1" height="1">
-					<image href="%2$s" x="0" y="0" width="%3$s" height="%3$s" preserveAspectRatio="xMidYMid slice"/>
-				</pattern>',
-				esc_attr( $fill_id ),
-				esc_url( $src ),
-				esc_attr( (string) ( $r_wedge * 2 ) )
-			);
+		if ( ressa_layer_slice_image( $layer ) ) {
 			continue;
 		}
 
 		// Placeholder: a soft two-stop gradient in the layer's accent colour.
+		$accent = ressa_item( $layer, 'accent', '#118c8c' );
+
 		printf(
-			'<linearGradient id="%1$s" x1="0" y1="0" x2="0.85" y2="1">
+			'<linearGradient id="rh-slice-%1$d" x1="0" y1="0" x2="0.85" y2="1">
 				<stop offset="0%%" stop-color="%2$s"/>
 				<stop offset="100%%" stop-color="%3$s"/>
 			</linearGradient>',
-			esc_attr( $fill_id ),
+			(int) $index,
 			esc_attr( ressa_shade_hex( $accent, 0.22 ) ),
 			esc_attr( ressa_shade_hex( $accent, -0.28 ) )
 		);
@@ -220,34 +311,64 @@ function ressa_render_wheel( $layers ) {
 	echo '</defs>';
 
 	// -- Slices -------------------------------------------------------------
-	echo '<g class="rh-wheel__wedges">';
+	// Spokes are drawn twice: dark beneath the slices, where they read against
+	// the empty white wheel, and light above them, where they separate two
+	// photographs. Each set is invisible where the other one does the work.
+	foreach ( array( 'rh-wheel__spoke', 'rh-wheel__spoke rh-wheel__spoke--over' ) as $pass => $spoke_class ) {
+		if ( 1 === $pass ) {
+			echo '<g class="rh-wheel__wedges">';
 
-	foreach ( $layers as $index => $layer ) {
-		$start = $index * $step;
-		$end   = $start + $step;
+			foreach ( $layers as $index => $layer ) {
+				$start = $index * $step;
+				$end   = $start + $step;
+				$image = ressa_layer_slice_image( $layer );
 
-		list( $x1, $y1 ) = ressa_polar( $cx, $cy, $r_wedge, $start );
-		list( $x2, $y2 ) = ressa_polar( $cx, $cy, $r_wedge, $end );
+				printf( '<g class="rh-wheel__wedge" data-wheel-slice="%d">', (int) $index );
 
-		$large = ( $step > 180 ) ? 1 : 0;
+				if ( $image ) {
+					list( $bx, $by, $bw, $bh ) = ressa_sector_bounds( $cx, $cy, $r_wedge, $start, $end );
 
-		printf(
-			'<path class="rh-wheel__wedge" data-wheel-slice="%1$d" d="M %2$s %3$s L %4$s %5$s A %6$s %6$s 0 %7$d 1 %8$s %9$s Z" fill="url(#rh-slice-%1$d)"/>',
-			(int) $index,
-			esc_attr( (string) $cx ),
-			esc_attr( (string) $cy ),
-			esc_attr( (string) $x1 ),
-			esc_attr( (string) $y1 ),
-			esc_attr( (string) $r_wedge ),
-			$large,
-			esc_attr( (string) $x2 ),
-			esc_attr( (string) $y2 )
-		);
+					printf(
+						'<image clip-path="url(#rh-clip-%1$d)" href="%2$s" x="%3$s" y="%4$s" width="%5$s" height="%6$s" preserveAspectRatio="xMidYMid slice"/>',
+						(int) $index,
+						esc_url( $image ),
+						esc_attr( (string) $bx ),
+						esc_attr( (string) $by ),
+						esc_attr( (string) $bw ),
+						esc_attr( (string) $bh )
+					);
+				} else {
+					printf(
+						'<path d="%s" fill="url(#rh-slice-%d)"/>',
+						esc_attr( ressa_sector_path( $cx, $cy, $r_wedge, $start, $end, $step ) ),
+						(int) $index
+					);
+				}
+
+				echo '</g>';
+			}
+
+			echo '</g>';
+		}
+
+		foreach ( $layers as $index => $layer ) {
+			$angle = $index * $step;
+
+			list( $sx, $sy ) = ressa_polar( $cx, $cy, $r_hub, $angle );
+			list( $ex, $ey ) = ressa_polar( $cx, $cy, $r_ring, $angle );
+
+			printf(
+				'<line class="%s" x1="%s" y1="%s" x2="%s" y2="%s"/>',
+				esc_attr( $spoke_class ),
+				esc_attr( (string) $sx ),
+				esc_attr( (string) $sy ),
+				esc_attr( (string) $ex ),
+				esc_attr( (string) $ey )
+			);
+		}
 	}
 
-	echo '</g>';
-
-	// -- Outline, spokes, dots and labels -----------------------------------
+	// -- Outline, markers and labels ----------------------------------------
 	printf(
 		'<circle class="rh-wheel__outline" cx="%s" cy="%s" r="%s"/>',
 		esc_attr( (string) $cx ),
@@ -258,18 +379,8 @@ function ressa_render_wheel( $layers ) {
 	foreach ( $layers as $index => $layer ) {
 		$angle = $index * $step;
 
-		list( $sx, $sy ) = ressa_polar( $cx, $cy, $r_hub, $angle );
-		list( $ex, $ey ) = ressa_polar( $cx, $cy, $r_ring, $angle );
 		list( $dx, $dy ) = ressa_polar( $cx, $cy, $r_ring, $angle );
 		list( $lx, $ly ) = ressa_polar( $cx, $cy, $r_label, $angle );
-
-		printf(
-			'<line class="rh-wheel__spoke" x1="%s" y1="%s" x2="%s" y2="%s"/>',
-			esc_attr( (string) $sx ),
-			esc_attr( (string) $sy ),
-			esc_attr( (string) $ex ),
-			esc_attr( (string) $ey )
-		);
 
 		printf(
 			'<circle class="rh-wheel__dot" data-wheel-dot="%d" cx="%s" cy="%s" r="4.6"/>',

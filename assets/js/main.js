@@ -270,7 +270,14 @@
 				}
 			});
 
-			[wedges, dots, labels].forEach(function (group) {
+			// Slices accumulate: choosing a layer fills its slice and keeps
+			// every slice before it, so the wheel is whole by the last tab.
+			wedges.forEach(function (wedge, i) {
+				wedge.classList.toggle('is-active', i <= index);
+			});
+
+			// The marker and label still track only the current layer.
+			[dots, labels].forEach(function (group) {
 				group.forEach(function (node, i) {
 					node.classList.toggle('is-active', i === index);
 				});

@@ -57,7 +57,7 @@ Each repeating group is a custom post type with its own fields. Drag the **Order
 
 | Group | Drives | Notes |
 |---|---|---|
-| Data Layers | The “We read seven” tabs and wheel | Order = order around the wheel. Featured image fills the wheel slice; the accent colour is used until one is set. |
+| Data Layers | The “We read seven” tabs and wheel | Order = order around the wheel. Featured image fills the wheel slice; the bundled photograph is used until one is set, then the accent colour as a last resort. |
 | Process Steps | Test → Analyze → Act | The short *rail label* is the pill text; the *step label* is the “Step 01” line. |
 | — | — | Each step's featured image fills the media frame above its copy. |
 | Platform Features | The six-card grid | Featured image is the card visual. |
@@ -76,10 +76,14 @@ Logo: **Appearance → Customize → Site Identity** replaces the placeholder br
 
 ## The three signature interactions
 
-**Seven-layer tabs.** Selecting a tab cross-fades the copy panel and blooms the matching slice of
-the wheel open from the centre, while the spoke marker and label update in step. Full keyboard
-support (arrow keys, Home/End) and correct `role="tablist"` semantics. Clicking a label on the
-wheel itself also selects that layer.
+**Seven-layer tabs.** Selecting a tab cross-fades the copy panel and blooms that layer's slice of
+the wheel open from the centre. Slices accumulate as you move along the tabs, so by Clinical Data
+the wheel is a complete pie of all seven photographs; stepping back peels them away again. Each
+photograph is clipped to its own slice rather than cropped out of one image spanning the wheel, and
+the spoke separators are drawn twice — dark beneath the slices where they read against the empty
+wheel, light above them where they part two photographs — so neither pass needs any state. Full
+keyboard support (arrow keys, Home/End) and correct `role="tablist"` semantics. Clicking a label on
+the wheel itself also selects that layer.
 
 **Test → Analyze → Act.** The “Works with the data you already have” band pins to the viewport and
 plays as a four-stage sequence: the section's own heading holds the first screenful, then Test,
@@ -159,9 +163,9 @@ the sanitiser and the Customizer control are all generated from it.
 
 ## Artwork shipped with the theme
 
-`assets/img/` holds the supplied photography, used as the starting state for the clinician row, the
-story carousel posters and The Output. Setting a featured image (or the Customizer's phone
-screenshot) overrides the bundled file — nothing needs to be deleted first.
+`assets/img/` holds the supplied photography, used as the starting state for the seven wheel
+slices, the clinician row, the story carousel posters and The Output. Setting a featured image (or
+the Customizer's phone screenshot) overrides the bundled file — nothing needs to be deleted first.
 
 The rest are neutral stand-ins meant to be replaced:
 
