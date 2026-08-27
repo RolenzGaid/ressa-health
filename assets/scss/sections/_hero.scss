@@ -14,6 +14,13 @@
   overflow: hidden;
   isolation: isolate;
   background: $c-surface-alt;
+
+  /// Her width lives here because the figure below needs it twice: once to
+  /// size her, and again to work out how far left to sit — and that second
+  /// sum also needs the panel's width, so the two travel together. Change
+  /// the panel width here and she follows it.
+  --rh-figure-w: min(39.5%, 69.6vh);
+  --rh-glass-w: 62.5%;
 }
 
 .rh-hero__bg {
@@ -26,72 +33,100 @@
   object-position: center;
 }
 
-/// The cut-out sitter, at her own proportions. She is sized from her width
-/// with `height: auto`, so the artwork is never squashed or re-cropped by
-/// object-fit; the design places her taller than the hero and lets the
-/// section's own edge take the overflow, which is what the clip below does.
+/// The cut-out sitter, at her own proportions and at the scale she is drawn
+/// at in the comp: roughly 83% of the hero's height, top of her hair a shade
+/// under a quarter of the way down, and the last of her running off the
+/// bottom edge.
 ///
-/// The min-height is only a guard for unusually tall viewports, where her
-/// natural height would not reach the bottom of the hero.
+/// Sizing her from the hero's *height* is the whole trick. Her width in the
+/// comp is 39.5% of the frame, but that number only reproduces the drawing
+/// on a 16:9 hero — on a wider, shorter browser window a width-based size
+/// makes her tower over the copy. The two terms below are the same size at
+/// the 1920x1080 the comp was drawn at, and whichever is tighter wins after
+/// that, so she keeps her scale against the hero instead of swelling with
+/// the window. (69.6vh is 83vh multiplied through her 699:833 aspect.)
 .rh-hero__figure {
   position: absolute;
   z-index: 2;
-  top: 23%;
+  top: 23.5%;
   bottom: auto;
-  right: clamp(0px, 2.1vw, 40px);
-  width: min(48.5%, 940px);
+  width: var(--rh-figure-w);
   height: auto;
-  min-height: 77%;
-  max-width: none;
-  object-fit: cover;
-  object-position: top center;
+  /// Far enough left that her body covers the frosted panel's right-hand
+  /// edge instead of standing beside it. The rightmost point of her
+  /// left-hand outline — the notch under her chin — is 38.9% into the
+  /// artwork, so parking that notch on the panel's edge means sitting the
+  /// width of the gap beside the panel in, less the 0.611 of her width that
+  /// runs from the notch to her right side, plus 12px of overlap.
+  ///
+  /// On a wide, short window this pulls her a long way in from the right —
+  /// the panel's 66.5% is a lot of pixels there while she is sized off the
+  /// height — but the alternative is the bare edge showing, so the inset is
+  /// allowed to grow.
+  right: max(0px, calc(100% - var(--rh-glass-w) - 0.611 * var(--rh-figure-w) + 12px));
   pointer-events: none;
 
-  /// Narrow screens stack instead: she sits in the open space above the copy
-  /// panel, and drops behind it so nothing can cover the text.
+  /// Narrow screens stack instead of overlapping: she comes out of the
+  /// absolute layer altogether and becomes the first item in a column, so
+  /// the copy panel follows immediately under her rather than floating at
+  /// the foot of the screen with a band of empty photograph between them.
   @include down('lg') {
-    z-index: 0;
-    top: calc(var(--rh-header-h) + var(--rh-header-gap) * 2 + 10px);
-    bottom: auto;
-    right: clamp(4px, 3vw, 32px);
-    height: 34%;
-    width: auto;
-    max-width: 72%;
-    object-fit: contain;
-    object-position: top right;
+    position: relative;
+    inset: auto;
+    z-index: 1;
+    align-self: center;
+    width: min(58%, 18rem);
+    height: auto;
+    /// A hairline of overlap: she stands on the panel, and this keeps a
+    /// subpixel seam from opening between the two at fractional zooms.
+    margin-bottom: -1px;
   }
 
-  @include down('sm') { height: 30%; }
+  @include down('sm') { width: min(64%, 15rem); }
 }
 
 .rh-hero__glass {
   position: relative;
   z-index: 1;
-  /// Wide enough that its right-hand edge runs behind her the whole way down,
-  /// the way the panel tucks under her in the design, rather than stopping
-  /// short and reading as a rectangle parked beside her.
-  width: min(100%, 66.5%);
+  width: min(100%, var(--rh-glass-w));
+  /// Sits a little below the centre line rather than on it.
+  margin-top: 5%;
   padding-block: clamp(1.75rem, 4vw, 4.9rem);
   padding-left: var(--rh-edge);
-  padding-right: clamp(2rem, 5vw, 6rem);
-  @include frosted(0.45);
+  /// The panel's right-hand edge is deliberately hidden behind her, so the
+  /// copy cannot be allowed to run all the way to it — the last words would
+  /// disappear under her shoulder. This holds the text back by the depth of
+  /// that overlap: the distance from her chin notch, where the edge sits, to
+  /// the leftmost point of her outline over the rows the copy occupies.
+  padding-right: calc(0.18 * var(--rh-figure-w) + 12px);
+  @include frosted(0.45, 15px);
 
   @include down('lg') {
     z-index: 2;
     width: 100%;
+    margin-top: 0;
     padding-inline: clamp(1.25rem, 5vw, 2.5rem);
     /// Denser glass on small screens: the photograph runs behind the panel
     /// here, so the copy needs more to sit on.
-    @include frosted(0.72);
+    @include frosted(0.72, 15px);
   }
 }
 
-/// Below the tablet breakpoint the panel drops to the foot of the screen so
-/// the photograph is not hidden behind the copy.
+/// Below the tablet breakpoint the hero stops being a stage with things
+/// placed on it and becomes an ordinary column: her, then the copy, centred
+/// on the page with the photograph behind them.
+///
+/// The stack starts directly under the masthead and the section is only as
+/// tall as it needs to be. The full-screen minimum is a desktop idea: held
+/// here it has to put its leftover height somewhere, and every candidate —
+/// above her, under the buttons, inside the panel — reads as a mistake.
 @include down('lg') {
   .rh-hero {
-    align-content: end;
-    padding-top: calc(var(--rh-header-h) + var(--rh-header-gap) * 2);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-height: 0;
+    padding-top: calc(var(--rh-header-h) + var(--rh-header-gap) * 2 + 8px);
   }
 }
 

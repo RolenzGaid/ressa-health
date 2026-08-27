@@ -196,6 +196,13 @@
   /// Below the desktop breakpoint the nav is hidden, so nothing else is left
   /// to push these to the far end of the pill.
   margin-left: auto;
+
+  /// With the nav in place this margin has to go. Left in, it is a third
+  /// auto margin competing with the nav's own pair for the leftover space,
+  /// which gives the nav two thirds of it instead of half and settles the
+  /// strip left of centre. Without it the nav's margins split the gap
+  /// evenly and it sits midway between the logo and the account icon.
+  @include up('lg') { margin-left: 0; }
 }
 
 .rh-header__icon-btn {
