@@ -34,7 +34,7 @@
   right: 0;
   top: 20%;
   bottom: 0;
-  width: min(52%, 1000px);
+  width: min(54%, 1040px);
   height: auto;
   object-fit: cover;
   object-position: top center;
@@ -60,7 +60,10 @@
 .rh-hero__glass {
   position: relative;
   z-index: 1;
-  width: min(100%, 60%);
+  /// Wide enough that its right-hand edge runs behind her the whole way down,
+  /// the way the panel tucks under her in the design, rather than stopping
+  /// short and reading as a rectangle parked beside her.
+  width: min(100%, 65%);
   padding-block: clamp(1.75rem, 4vw, 4.9rem);
   padding-left: var(--rh-edge);
   padding-right: clamp(2rem, 5vw, 6rem);
