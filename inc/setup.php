@@ -43,6 +43,7 @@ function ressa_setup() {
 	register_nav_menus(
 		array(
 			'primary' => __( 'Primary Navigation', 'ressa-health' ),
+			'legal'   => __( 'Footer — Legal Links', 'ressa-health' ),
 		)
 	);
 

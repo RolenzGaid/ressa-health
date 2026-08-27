@@ -30,11 +30,11 @@
 
   .rh-steps__sticky {
     position: sticky;
-    top: calc(#{$header-h} + 8px);
+    top: calc(var(--rh-header-space) + 8px);
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-height: calc(100vh - #{$header-h} - 40px);
+    min-height: calc(100vh - var(--rh-header-space) - 40px);
     padding-block: 1.5rem;
   }
 
@@ -165,6 +165,21 @@
   box-shadow: $shadow-md;
 }
 
+/// Supplied step artwork is a transparent illustration, not a photograph in a
+/// card: no frame, no shadow, and never cropped.
+.rh-step__media--art {
+  border-radius: 0;
+  box-shadow: none;
+
+  .rh-media {
+    --media-ratio: 4 / 3;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .rh-media img { object-fit: contain; }
+}
+
 .rh-step__body {
   max-width: 34rem;
   margin-top: 1.6rem;
@@ -198,6 +213,8 @@
   .rh-steps__rail { margin-bottom: clamp(1rem, 2.6vh, 2.4rem); }
 
   .rh-step__media { width: min(100%, 560px, calc((100vh - 28rem) * 16 / 9)); }
+
+  .rh-step__media--art { width: min(100%, 520px, calc((100vh - 26rem) * 4 / 3)); }
 
   .rh-step__body { margin-top: clamp(0.9rem, 1.9vh, 1.6rem); }
 }

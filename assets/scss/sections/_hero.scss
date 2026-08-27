@@ -1,37 +1,95 @@
 @use '../abstracts/variables' as *;
 @use '../abstracts/mixins' as *;
 
+// --------------------------------------------------------------------------
+// Hero — a full-screen photograph with the copy on a frosted panel, and the
+// masthead pill floating over the top of it.
+// --------------------------------------------------------------------------
 .rh-hero {
   position: relative;
-  /// Grid rather than flex so the inner container still stretches to full
-  /// width (and keeps its own gutters) while the content block centres.
   display: grid;
   align-content: center;
+  min-height: 100vh;
+  min-height: 100svh;
   overflow: hidden;
-  background: $c-surface;
-  padding-block: clamp(2.5rem, 1.5rem + 4vw, 4.5rem);
-  text-align: center;
+  isolation: isolate;
+  background: $c-surface-alt;
+}
 
-  /// The masthead and the hero together make one screenful, so the fold lands
-  /// exactly on the hero's bottom edge. `min-height` (not `height`) so the
-  /// section still grows if the copy ever outgrows a short viewport.
-  min-height: calc(100vh - #{$header-h-sm} - #{$header-pad-sm * 2});
-  min-height: calc(100svh - #{$header-h-sm} - #{$header-pad-sm * 2});
+.rh-hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
 
-  @include up('lg') {
-    min-height: calc(100vh - #{$header-h} - #{$header-pad * 2});
-    min-height: calc(100svh - #{$header-h} - #{$header-pad * 2});
+/// The cut-out sitter. Anchored by the top of her head, running off the
+/// bottom edge exactly as the composition does in the design.
+.rh-hero__figure {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  top: 20%;
+  bottom: 0;
+  width: min(52%, 1000px);
+  height: auto;
+  object-fit: cover;
+  object-position: top center;
+  pointer-events: none;
+
+  /// Narrow screens stack instead: she sits in the open space above the copy
+  /// panel, and drops behind it so nothing can cover the text.
+  @include down('lg') {
+    z-index: 0;
+    top: calc(var(--rh-header-h) + var(--rh-header-gap) * 2 + 10px);
+    bottom: auto;
+    right: clamp(4px, 3vw, 32px);
+    height: 34%;
+    width: auto;
+    max-width: 72%;
+    object-fit: contain;
+    object-position: top right;
+  }
+
+  @include down('sm') { height: 30%; }
+}
+
+.rh-hero__glass {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 60%);
+  padding-block: clamp(1.75rem, 4vw, 4.9rem);
+  padding-left: var(--rh-edge);
+  padding-right: clamp(2rem, 5vw, 6rem);
+  @include frosted(0.45);
+
+  @include down('lg') {
+    z-index: 2;
+    width: 100%;
+    padding-inline: clamp(1.25rem, 5vw, 2.5rem);
+    /// Denser glass on small screens: the photograph runs behind the panel
+    /// here, so the copy needs more to sit on.
+    @include frosted(0.72);
   }
 }
 
-.rh-hero__inner {
-  @include container(940px);
-  position: relative;
-  z-index: 1;
+/// Below the tablet breakpoint the panel drops to the foot of the screen so
+/// the photograph is not hidden behind the copy.
+@include down('lg') {
+  .rh-hero {
+    align-content: end;
+    padding-top: calc(var(--rh-header-h) + var(--rh-header-gap) * 2);
+  }
 }
 
 .rh-hero__title {
-  margin: 0 0 1.35rem;
+  margin: 0 0 1.1rem;
+  /// Sized in vw rather than capped, so the two-line lockup wraps the same
+  /// way on a laptop as it does at the 1920 width the design was drawn at.
+  font-size: clamp(1.7rem, 2.6vw, 3.2rem);
 
   /// Each line is its own block so the two-line lockup in the comp holds at
   /// every width instead of rewrapping arbitrarily.
@@ -39,8 +97,15 @@
 }
 
 .rh-hero__lede {
-  max-width: 40rem;
-  margin: 0 auto 2rem;
+  max-width: 50rem;
+  margin: 0 0 1.9rem;
+  /// Scales with the headline so the paragraph keeps its two-line shape from
+  /// laptop through to the 1920 width the design was drawn at.
+  font-size: clamp(0.92rem, 1vw, 1.24rem);
+  color: $c-ink-soft;
 }
 
-.rh-hero__actions { justify-content: center; }
+.rh-hero__actions {
+  justify-content: flex-start;
+  gap: 0.4rem 1.1rem;
+}

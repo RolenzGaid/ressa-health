@@ -270,3 +270,13 @@ function ressa_story_video( $item ) {
 
 	return $url ? $url : RESSA_URI . '/assets/media/story-placeholder.mp4';
 }
+
+/**
+ * Replace the {year} token in footer strings.
+ *
+ * @param string $value Raw string.
+ * @return string
+ */
+function ressa_tokens( $value ) {
+	return str_replace( '{year}', gmdate( 'Y' ), $value );
+}

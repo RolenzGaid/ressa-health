@@ -103,6 +103,9 @@ function ressa_default_options() {
 		'faq_eyebrow'       => 'Questions',
 		'faq_title'         => 'Frequently Asked Questions',
 
+		// -- Footer ---------------------------------------------------------
+		'footer_copyright'  => '&copy; {year} Ressa Health. All rights reserved.',
+
 		// -- Closing CTA ----------------------------------------------------
 		'cta_title'         => 'The whole story. Yours.',
 		'cta_lede'          => 'Your labs are already telling a story. Ressa Health is the first thing that reads all of it &mdash; and finally tells it back to you.',
@@ -201,18 +204,21 @@ function ressa_default_items( $type ) {
 		'rh_step' => array(
 			array(
 				'title'       => 'Share or upload your labs',
+				'default_image' => 'assets/img/step-1.webp',
 				'rail_label'  => 'Test',
 				'step_label'  => 'Step 01',
 				'description' => 'Connect results you already have from Quest, Labcorp or your patient portal &mdash; or order a fresh panel through the Ressa partner network.',
 			),
 			array(
 				'title'       => 'See what your body is saying',
+				'default_image' => 'assets/img/step-2.webp',
 				'rail_label'  => 'Analyze',
 				'step_label'  => 'Step 02',
 				'description' => 'Our engine reads across all seven layers at once and surfaces the connection that no single panel, device or visit could show on its own.',
 			),
 			array(
 				'title'       => 'You get the Story of You',
+				'default_image' => 'assets/img/step-3.webp',
 				'rail_label'  => 'Act',
 				'step_label'  => 'Step 03',
 				'description' => 'One narrative picture of your health &mdash; the thread running through everything, written in plain language you can act on and share.',

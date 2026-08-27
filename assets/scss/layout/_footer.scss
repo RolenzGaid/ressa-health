@@ -1,0 +1,56 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// --------------------------------------------------------------------------
+// A quiet closing strip: brand, copyright, legal links. The page's actual
+// ending is the call to action above it.
+// --------------------------------------------------------------------------
+.rh-footer {
+  background: $c-surface;
+  border-top: 1px solid $c-line-soft;
+}
+
+.rh-footer__inner {
+  @include container;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  padding-block: clamp(1.5rem, 1rem + 1.4vw, 2.25rem);
+
+  .rh-brand {
+    /// The masthead lockup scales with the viewport; down here it stays put.
+    .rh-brand__mark { width: 28px; height: 28px; }
+    .rh-brand__text { font-size: 0.95rem; }
+  }
+
+  @include down('sm') {
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.rh-footer__copyright {
+  margin: 0;
+  font-size: 0.82rem;
+  color: $c-muted;
+}
+
+.rh-footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.82rem;
+
+  a {
+    color: $c-muted;
+
+    @include hover { color: $c-teal-500; }
+  }
+}

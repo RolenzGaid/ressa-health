@@ -67,12 +67,31 @@ Each repeating group is a custom post type with its own fields. Drag the **Order
 | Trust Promises | The four mint cards | |
 | FAQs | The accordion | |
 
-Menus: **Appearance → Menus** provides a *Primary* location for the masthead. Until a menu is
-assigned, the header falls back to the navigation shown in the design.
+Menus: **Appearance → Menus** provides *Primary* for the masthead and *Legal* for the two footer
+links. Until a menu is assigned, each falls back to what the design shows.
 
 Logo: **Appearance → Customize → Site Identity** replaces the placeholder brand mark.
 
 ---
+
+## The hero and masthead
+
+The masthead is a frosted pill fixed over the page rather than a bar above it, and the hero is a
+full-screen photograph: a background plate, a cut-out sitter anchored by the top of her head and
+running off the bottom edge, and the copy on a frosted panel that bleeds off the left.
+
+Frosting follows the values in the design file — a white fill at 45% over `blur(30px)
+brightness(1.15)`. Where a browser cannot blur a backdrop, an `@supports` fallback raises the fill
+opacity instead so the copy never loses its footing.
+
+Everything about the pill and the hero type is sized in `vw` rather than capped, so the proportions
+of the 1920-wide design hold across laptop and desktop. Measured at eight widths from 1152 to 1920,
+the headline stays two lines and the panel stays 60% of the hero. Below the desktop breakpoint the
+composition stacks: the sitter moves to the open space above the copy and drops behind the panel,
+which thickens to 72% so nothing can sit on top of the text.
+
+Because the masthead is fixed, `.rh-main` carries a matching top padding on every template except
+the front page, whose hero is meant to run underneath it.
 
 ## The three signature interactions
 
@@ -163,9 +182,13 @@ the sanitiser and the Customizer control are all generated from it.
 
 ## Artwork shipped with the theme
 
-`assets/img/` holds the supplied photography, used as the starting state for the seven wheel
-slices, the clinician row, the story carousel posters and The Output. Setting a featured image (or
-the Customizer's phone screenshot) overrides the bundled file — nothing needs to be deleted first.
+`assets/img/` holds the supplied photography and illustration, used as the starting state for the
+hero plates, the seven wheel slices, the three step illustrations, the clinician row, the story
+carousel posters and The Output. Setting a featured image (or the Customizer's phone screenshot)
+overrides the bundled file — nothing needs to be deleted first.
+
+Step artwork is transparent illustration rather than photography, so a step that has an image drops
+the card, the shadow and the crop, and is contained rather than covered.
 
 The rest are neutral stand-ins meant to be replaced:
 
@@ -185,8 +208,8 @@ icon-only control, and a comparison table built from `<th scope>` with a caption
 
 ## Notes
 
-* This is a landing page: it ends on the closing call to action and has no footer band. `footer.php`
-  only closes the document and renders the back-to-top control.
-* The hero is sized so the masthead plus the hero come to exactly one viewport height.
+* This is a landing page: the closing call to action is the ending, followed only by a quiet strip
+  carrying the brand, the copyright line and the two legal links.
+* The hero fills the viewport on its own; the masthead floats over it.
 * `.preview/` contains the local render harness used to check the build against the comp. It is not
   part of the theme and is excluded from version control.

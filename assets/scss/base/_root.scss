@@ -33,7 +33,23 @@
   --rh-font-sans:  #{$font-sans};
 
   --rh-container: #{$container};
-  --rh-header-h:  #{$header-h};
+
+  /// The masthead floats over the hero as a pill. Everything about it scales
+  /// with the viewport so the proportions of the 1920-wide design hold from
+  /// laptop to desktop.
+  --rh-header-inset: clamp(14px, 4.7vw, 90px);
+  --rh-header-gap:   clamp(12px, 1.5vw, 28px);
+  --rh-header-h:     clamp(58px, 6.4vw, 124px);
+  --rh-header-pad:   clamp(16px, 3.6vw, 70px);
+
+  /// Once the page scrolls the pill tightens to this, which is also the
+  /// offset anything pinned below it has to clear.
+  --rh-header-stuck-h:   clamp(56px, 4vw, 76px);
+  --rh-header-stuck-gap: 10px;
+  --rh-header-space:     calc(var(--rh-header-stuck-h) + var(--rh-header-stuck-gap) * 2);
+
+  /// Where the hero copy starts: level with the logo inside the pill.
+  --rh-edge: calc(var(--rh-header-inset) + var(--rh-header-pad));
 
   /// Multiplier switched to 0 by the reduced-motion query so that a single
   /// token can neutralise transform-based motion everywhere at once.

@@ -1,42 +1,46 @@
 @use '../abstracts/variables' as *;
 @use '../abstracts/mixins' as *;
 
+// --------------------------------------------------------------------------
+// The masthead is a frosted pill floating over the page, not a bar above it.
+// --------------------------------------------------------------------------
 .rh-header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
-  background: rgba($c-surface, 0.9);
-  backdrop-filter: saturate(160%) blur(12px);
-  -webkit-backdrop-filter: saturate(160%) blur(12px);
-  /// The hairline is an inset shadow rather than a border so the masthead's
-  /// height stays exactly $header-h — anything else and the full-height hero
-  /// and the pinned step panel are both off by a pixel.
-  box-shadow: none;
-  /// Sits with a little air at the top of the page and tightens up once it
-  /// starts overlapping content.
-  padding-block: $header-pad-sm;
-  transition: background-color $dur-base $ease-out-soft,
-              box-shadow       $dur-base $ease-out-soft,
-              padding-block    $dur-base $ease-out-soft;
-
-  @include up('lg') { padding-block: $header-pad; }
-}
-
-/// Set by main.js once the page has scrolled past the hero threshold.
-.rh-header.is-stuck {
-  background: rgba($c-surface, 0.97);
-  box-shadow: inset 0 -1px 0 $c-line-soft, #{$shadow-sm};
-  padding-block: 0;
+  padding: var(--rh-header-gap) var(--rh-header-inset);
+  /// The gutter around the pill must not swallow clicks meant for the hero.
+  pointer-events: none;
+  transition: padding var(--rh-motion-dur, #{$dur-base}) $ease-out-soft;
 }
 
 .rh-header__inner {
-  @include container($container-wide);
+  pointer-events: auto;
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  height: $header-h-sm;
+  gap: clamp(0.75rem, 1.4vw, 2rem);
+  height: var(--rh-header-h);
+  max-width: 1760px;
+  margin-inline: auto;
+  padding-inline: var(--rh-header-pad);
+  border-radius: $radius-pill;
+  @include frosted(0.62);
+  transition: height $dur-base $ease-out-soft,
+              background-color $dur-base $ease-out-soft,
+              box-shadow $dur-base $ease-out-soft;
+}
 
-  @include up('lg') { height: $header-h; }
+/// Set by main.js once the page has scrolled off the hero.
+.rh-header.is-stuck {
+  padding-block: var(--rh-header-stuck-gap);
+
+  .rh-header__inner {
+    height: var(--rh-header-stuck-h);
+    background: rgba($c-surface, 0.9);
+    box-shadow: $shadow-md;
+  }
 }
 
 // --------------------------------------------------------------------------
@@ -49,14 +53,14 @@
   flex: none;
   color: $c-teal-800;
 
-  img { max-height: 44px; width: auto; }
+  img { max-height: clamp(30px, 3.2vw, 62px); width: auto; }
 
   @include hover { color: $c-teal-600; }
 }
 
 .rh-brand__mark {
-  width: 32px;
-  height: 32px;
+  width: clamp(26px, 2.4vw, 46px);
+  height: clamp(26px, 2.4vw, 46px);
   flex: none;
   transition: transform $dur-base $ease-spring;
 
@@ -67,7 +71,7 @@
   display: flex;
   flex-direction: column;
   font-family: $font-serif;
-  font-size: 1.05rem;
+  font-size: clamp(0.95rem, 1.15vw, 1.6rem);
   font-weight: 600;
   line-height: 1.05;
   letter-spacing: -0.01em;
@@ -90,7 +94,7 @@
   }
 
   @include up('lg') {
-    img { max-height: 48px; max-width: 220px; }
+    img { max-height: clamp(38px, 3.5vw, 68px); max-width: 260px; }
   }
 }
 
@@ -124,7 +128,7 @@
   display: inline-block;
   padding: 0.5rem 0;
   color: $c-ink;
-  font-size: 0.715rem;
+  font-size: clamp(0.68rem, 0.74vw, 0.95rem);
   font-weight: 600;
   letter-spacing: 0.085em;
   text-transform: uppercase;
@@ -187,18 +191,21 @@
 .rh-header__actions {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: clamp(0.6rem, 1vw, 1.1rem);
   flex: none;
+  /// Below the desktop breakpoint the nav is hidden, so nothing else is left
+  /// to push these to the far end of the pill.
+  margin-left: auto;
 }
 
 .rh-header__icon-btn {
   display: none;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
-  color: $c-ink-soft;
-  font-size: 2rem;
+  width: clamp(30px, 2.3vw, 46px);
+  height: clamp(30px, 2.3vw, 46px);
+  color: $c-teal-500;
+  font-size: clamp(1.9rem, 2.3vw, 2.9rem);
   transition: color $dur-fast $ease-out-soft, transform $dur-fast $ease-spring;
 
   @include up('lg') { display: inline-flex; }
@@ -214,7 +221,7 @@
 .rh-header .rh-header__cta {
   display: none;
   padding: 0.82em 1.7em;
-  font-size: 0.9rem;
+  font-size: clamp(0.82rem, 1vw, 1.25rem);
   font-weight: 600;
   letter-spacing: 0;
   text-transform: none;
@@ -255,7 +262,7 @@
 
 .rh-drawer {
   position: fixed;
-  inset: $header-h-sm 0 0;
+  inset: calc(var(--rh-header-h) + var(--rh-header-gap) * 2) 0 0;
   z-index: 99;
   display: flex;
   flex-direction: column;

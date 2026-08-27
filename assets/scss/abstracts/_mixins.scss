@@ -72,6 +72,23 @@
 }
 
 // --------------------------------------------------------------------------
+// Surfaces
+// --------------------------------------------------------------------------
+
+/// Frosted glass, to the values in the design file: a white fill at low
+/// opacity over a blurred, slightly brightened backdrop. Where the browser
+/// cannot blur a backdrop, the fill takes over so the text stays readable.
+@mixin frosted($alpha: 0.45) {
+  background: rgba(255, 255, 255, $alpha);
+  backdrop-filter: blur(30px) brightness(1.15);
+  -webkit-backdrop-filter: blur(30px) brightness(1.15);
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    background: rgba(255, 255, 255, $alpha + 0.4);
+  }
+}
+
+// --------------------------------------------------------------------------
 // Utility
 // --------------------------------------------------------------------------
 @mixin visually-hidden {

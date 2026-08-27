@@ -305,6 +305,25 @@ function ressa_fallback_menu( $class ) {
 }
 
 /**
+ * Placeholder legal links, shown until a menu is assigned to the Legal
+ * location in WordPress.
+ */
+function ressa_fallback_legal_menu() {
+	$items = array(
+		'/privacy-policy/'       => __( 'Privacy Policy', 'ressa-health' ),
+		'/terms-and-conditions/' => __( 'Terms and Conditions', 'ressa-health' ),
+	);
+
+	echo '<ul class="rh-footer__legal">';
+
+	foreach ( $items as $url => $label ) {
+		printf( '<li><a href="%s">%s</a></li>', esc_url( $url ), esc_html( $label ) );
+	}
+
+	echo '</ul>';
+}
+
+/**
  * Render a comparison table mark.
  *
  * @param string $state 'yes', 'partial' or 'no'.

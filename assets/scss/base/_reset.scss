@@ -7,7 +7,7 @@ html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
   /// Anchor targets clear the sticky masthead.
-  scroll-padding-top: calc(#{$header-h} + 24px);
+  scroll-padding-top: calc(var(--rh-header-space) + 24px);
 }
 
 @media (prefers-reduced-motion: reduce) {

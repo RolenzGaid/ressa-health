@@ -1,6 +1,11 @@
 @use '../abstracts/variables' as *;
 @use '../abstracts/mixins' as *;
 
+/// The masthead is fixed, so every page but the front one has to start below
+/// it. The front page's hero sits underneath it by design.
+.rh-main { padding-top: calc(var(--rh-header-h) + var(--rh-header-gap) * 2); }
+.rh-front .rh-main { padding-top: 0; }
+
 .rh-container       { @include container; }
 .rh-container--wide { @include container($container-wide); }
 .rh-container--slim { @include container($container-slim); }

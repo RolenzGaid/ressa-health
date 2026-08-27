@@ -360,6 +360,17 @@ function ressa_customizer_schema() {
 			),
 		),
 
+		'footer' => array(
+			'title'  => __( 'Footer', 'ressa-health' ),
+			'fields' => array(
+				'footer_copyright' => array(
+					'label' => __( 'Copyright line', 'ressa-health' ),
+					'type'  => $text,
+					'help'  => __( '{year} is replaced with the current year.', 'ressa-health' ),
+				),
+			),
+		),
+
 		'cta' => array(
 			'title'  => __( 'Front Page — Closing CTA', 'ressa-health' ),
 			'fields' => array(

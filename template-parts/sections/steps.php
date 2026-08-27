@@ -66,6 +66,9 @@ $ressa_stages = count( $ressa_steps ) + 1;
 				</div>
 
 				<?php foreach ( $ressa_steps as $ressa_index => $ressa_step ) : ?>
+					<?php
+					$ressa_has_art = ! empty( $ressa_step['image_id'] ) || ressa_item_default_image( $ressa_step );
+					?>
 					<article
 						class="rh-step"
 						id="step-panel-<?php echo (int) $ressa_index; ?>"
@@ -73,7 +76,7 @@ $ressa_stages = count( $ressa_steps ) + 1;
 						aria-labelledby="step-tab-<?php echo (int) $ressa_index; ?>"
 						data-step-panel="<?php echo (int) $ressa_index; ?>"
 					>
-						<div class="rh-step__media rh-media-zoom" style="--stagger-index:0">
+						<div class="rh-step__media <?php echo $ressa_has_art ? 'rh-step__media--art' : 'rh-media-zoom'; ?>" style="--stagger-index:0">
 							<?php
 							ressa_media_frame(
 								$ressa_step,
