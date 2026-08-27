@@ -26,16 +26,23 @@
   object-position: center;
 }
 
-/// The cut-out sitter. Anchored by the top of her head, running off the
-/// bottom edge exactly as the composition does in the design.
+/// The cut-out sitter, at her own proportions. She is sized from her width
+/// with `height: auto`, so the artwork is never squashed or re-cropped by
+/// object-fit; the design places her taller than the hero and lets the
+/// section's own edge take the overflow, which is what the clip below does.
+///
+/// The min-height is only a guard for unusually tall viewports, where her
+/// natural height would not reach the bottom of the hero.
 .rh-hero__figure {
   position: absolute;
   z-index: 2;
-  right: 0;
-  top: 20%;
-  bottom: 0;
-  width: min(54%, 1040px);
+  top: 23%;
+  bottom: auto;
+  right: clamp(0px, 2.1vw, 40px);
+  width: min(48.5%, 940px);
   height: auto;
+  min-height: 77%;
+  max-width: none;
   object-fit: cover;
   object-position: top center;
   pointer-events: none;
@@ -63,7 +70,7 @@
   /// Wide enough that its right-hand edge runs behind her the whole way down,
   /// the way the panel tucks under her in the design, rather than stopping
   /// short and reading as a rectangle parked beside her.
-  width: min(100%, 65%);
+  width: min(100%, 66.5%);
   padding-block: clamp(1.75rem, 4vw, 4.9rem);
   padding-left: var(--rh-edge);
   padding-right: clamp(2rem, 5vw, 6rem);
