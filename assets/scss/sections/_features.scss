@@ -18,8 +18,12 @@
   display: flex;
   flex-direction: column;
 
+  /// The supplied artwork is drawn at 386x293 and carries its own tinted
+  /// ground and rounded corners, so the frame takes the artwork's ratio
+  /// rather than imposing 16/9 on it — at 16/9 the cover crop ate a quarter
+  /// of every illustration, top and bottom.
   .rh-media {
-    --media-ratio: 16 / 9;
+    --media-ratio: 386 / 293;
     margin-bottom: 1.15rem;
   }
 

@@ -227,28 +227,34 @@ function ressa_default_items( $type ) {
 
 		'rh_feature' => array(
 			array(
-				'title'       => 'Your Results',
-				'description' => 'Every marker in plain language, with the context that makes the number actually mean something.',
+				'title'         => 'Your Results',
+				'default_image' => 'assets/img/feature-results.webp',
+				'description'   => 'Every marker in plain language, with the context that makes the number actually mean something.',
 			),
 			array(
-				'title'       => 'AI Insights',
-				'description' => 'The connections across your seven layers, surfaced automatically as new data arrives.',
+				'title'         => 'AI Insights',
+				'default_image' => 'assets/img/feature-insights.webp',
+				'description'   => 'The connections across your seven layers, surfaced automatically as new data arrives.',
 			),
 			array(
-				'title'       => 'Learn',
-				'description' => 'Guided, sourced explanations of the terms your doctor never had the time to unpack.',
+				'title'         => 'Learn',
+				'default_image' => 'assets/img/feature-learn.webp',
+				'description'   => 'Guided, sourced explanations of the terms your doctor never had the time to unpack.',
 			),
 			array(
-				'title'       => 'Find a Practitioner',
-				'description' => 'Ressa-verified clinicians who already speak the language your data is written in.',
+				'title'         => 'Find a Practitioner',
+				'default_image' => 'assets/img/feature-practitioner.webp',
+				'description'   => 'Ressa-verified clinicians who already speak the language your data is written in.',
 			),
 			array(
-				'title'       => 'Track Over Time',
-				'description' => 'Watch every marker move, so change shows up in the data long before it shows up in you.',
+				'title'         => 'Track Over Time',
+				'default_image' => 'assets/img/feature-track.webp',
+				'description'   => 'Watch every marker move, so change shows up in the data long before it shows up in you.',
 			),
 			array(
-				'title'       => 'Connect &amp; Share',
-				'description' => 'Bring your whole story with you, and share it with exactly the people you choose.',
+				'title'         => 'Connect &amp; Share',
+				'default_image' => 'assets/img/feature-share.webp',
+				'description'   => 'Bring your whole story with you, and share it with exactly the people you choose.',
 			),
 		),
 
