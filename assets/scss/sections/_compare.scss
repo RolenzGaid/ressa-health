@@ -27,10 +27,13 @@
   --compare-col: 152px;
 }
 
+/// A grid item's automatic minimum size is its content's min-content width,
+/// which the 540px table would otherwise impose on the whole column — pushing
+/// the section, and the page with it, wider than a phone. Zeroing it lets the
+/// column stay at the screen's width and hands the overflow to the frame.
 .rh-compare__table-wrap {
   position: relative;
-
-  @include down('md') { overflow-x: auto; }
+  min-width: 0;
 }
 
 /// Tinted band behind the Ressa Health column. It sits outside the table so it
@@ -53,11 +56,20 @@
   .rh-compare__table-wrap { padding-block: 13px; }
 }
 
+/// The frame is the scroller, not the wrapper around it. The table is wider
+/// than a phone by design, and while the wrapper carried `overflow-x: auto`
+/// the frame's own `overflow: hidden` clipped the table first — so there was
+/// never anything left for the wrapper to scroll, and the last column simply
+/// could not be reached. Clipping vertically still rounds the table's corners
+/// into the border.
 .rh-compare__frame {
   position: relative;
   border: 1px solid $c-line;
   border-radius: 12px;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
 }
 
 .rh-compare__table {

@@ -28,7 +28,7 @@ if ( ! $ressa_rows ) {
 			</div>
 
 			<div class="rh-compare__table-wrap" data-rh-reveal="right">
-				<div class="rh-compare__frame">
+				<div class="rh-compare__frame" role="region" aria-labelledby="compare-title" tabindex="0">
 				<table class="rh-compare__table">
 					<caption class="screen-reader-text">
 						<?php esc_html_e( 'How Ressa Health compares with single-layer health products', 'ressa-health' ); ?>

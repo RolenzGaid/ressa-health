@@ -18,11 +18,13 @@
   justify-content: center;
 }
 
+/// Sized to fill its half of the split rather than to the width of the phone
+/// render it replaced, and deliberately still: it reveals once on scroll and
+/// then holds, with no float and no parallax drift.
 .rh-app__shot {
-  width: min(100%, 412px);
+  width: 100%;
+  max-width: 640px;
   height: auto;
-
-  @include motion-safe { animation: rh-float 8s $ease-in-out-soft infinite; }
 }
 
 // --------------------------------------------------------------------------
